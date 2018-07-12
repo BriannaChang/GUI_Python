@@ -24,13 +24,17 @@ param_names = {'Household ID' : 'householdId', 'Device ID': 'deviceId', 'Account
 
 
 def storeDictionary(param_dict):
-    print(param_dict)
+    final_list = []
     # store data keyed in by the user into a general dictionary
     for k, v in param_dict.items():
         if isinstance(v, str):
             temp_file.update({k: v})
         else:
-            temp_file.update({k: v.get_value()})
+            if k == 'offerKey':
+                final_list.append(v.get_value())
+                temp_file.update({k: final_list})
+            else:
+                temp_file.update({k: v.get_value()})
             # delete the entry once the data is stored.
             if v.entry.__class__.__name__ == 'Entry':
                 v.entry.delete(0, 'end')
@@ -41,10 +45,27 @@ def getParam(apinfo):
     # complete the body and url with the right input
     # find the fields needed to replace
     fieldToReplace = re.findall('\{([\w]+)\}', apinfo)
+    print('field', fieldToReplace)
     for item in fieldToReplace:
         if item in temp_file.keys():
             # fill in the parameter
             apinfo = apinfo.replace(''.join(['{', item, '}']), temp_file[item])
+    return apinfo
+
+
+def getSubscriptionsXML(apinfo):
+    # create a set of xml to slot in.
+    finalXML = ''
+    slot = '<subscription><offerKey>{offerKey}</offerKey><authorizationType>SUBSCRIPTION</authorizationType>' \
+           '</subscription>'
+    offerkey_list = temp_file['offerKey']
+    for offerKey in offerkey_list:
+        slot = slot.replace(''.join(['{offerKey}']), offerKey)
+        finalXML = finalXML.join(slot)
+
+    xml = et.parse(apinfo)
+    subscriptionList = xml.find('subscriptions')
+    subscriptionList.text = finalXML
     return apinfo
 
 
@@ -57,7 +78,11 @@ def getReponse(widget_name):
         if item == widget_name:
             apinfo = file[item]
     if apinfo['Body'] != '':
-        param = getParam(apinfo['Body'])
+        if 'offerKey' in temp_file.keys():
+            xml = getSubscriptionsXML(apinfo['Body'])
+        else:
+            xml = apinfo['Body']
+        param = getParam(xml)
     if apinfo['URL'] != '':
         url = getParam(apinfo['URL'])
     print('body', param, 'url', url)
@@ -93,7 +118,7 @@ def parseHouseholdDetails(xml):
                 list_of_dict.append({second.tag: second.text})
                 dictionary.update({first.tag: list_of_dict})
             elif first.tag == 'authorizations':
-                for third in range(0,len(second)):
+                for third in range(0, len(second)):
                     t_dict[second[third].tag] = second[third].text
                     tm_dict = {}
                     if second[third].tag != second[third-1]:
@@ -125,7 +150,7 @@ class CreateColumn(Frame):
     def __init__(self, root, label_text, r, optionList=[], name="", widget_type=None, fixed_text=None):
         Frame.__init__(self, root)
         label = Label(root, text=label_text, anchor="e")
-        label.grid(row=r, column=2, sticky='E')
+        label.grid(row=r, column=2, sticky='W')
         self.entry = None
         self.name = name
         char_text = StringVar()
@@ -164,44 +189,59 @@ class Boa(Tk):
         Tk.__init__(self, *args, **kwargs)
         self.wm_title('BOA Application')
         root = Frame(self, width=1080, height=720)
+        root.pack_propagate(0)
         root.pack(side=RIGHT)
         root.grid_columnconfigure(1, weight=1)
         root.grid_rowconfigure(1, weight=1)
-        # create options for actions
+
+        # create menu bar for actions
         menu = tk.Menu(root)
         tk.Tk.config(self, menu=menu)
         subMenu = tk.Menu(menu)
         subDevMenu = tk.Menu(menu)
+        subSubMenu = tk.Menu(menu)
         subSettMenu = tk.Menu(menu)
         menu.add_cascade(label='Subscriber', menu=subMenu)
-        menu.add_cascade(label='Device & Subscriptions', menu=subDevMenu)
+        menu.add_cascade(label='Device', menu=subDevMenu)
         menu.add_cascade(label='Settings', menu=subSettMenu)
+        menu.add_cascade(label='Subscriptions', menu=subSubMenu)
         subMenu.add_command(label='Create New Subscriber', command=lambda: self.pop_up(CreateSubs, 'Create New Subscriber'))
         subMenu.add_command(label='Suspend/Restore Subscriber',
                             command=lambda: self.pop_up(SusReSubs, 'Suspend/Restore Subscriber'))
         subMenu.add_command(label='Refresh card/Repair Box',
                             command=lambda: self.pop_up(RefreshRepair, 'Refresh card/Repair Box'))
         subMenu.add_command(label='Delete Subscriber', command=lambda: self.pop_up(DelSubs, 'Delete Subscriber'))
+        subMenu.add_command(label='Change Ownership', command=lambda: self.pop_up(ChangeOwnership, 'Change Ownership'))
         subSettMenu.add_command(label='Reset Pin', command=lambda: self.pop_up(ResetPin, 'Reset Pin'))
         subSettMenu.add_command(label='Change Bouquet ID', command=lambda: self.pop_up(ChangeBou, 'Change Bouquet ID'))
         subSettMenu.add_command(label='Change Region Key', command=lambda: self.pop_up(ChangeRegKey, 'Change Region Key'))
         subDevMenu.add_command(label='Replace Card', command=lambda: self.pop_up(ReplaceCard, 'Replace Card'))
-        subDevMenu.add_command(label='Add OPPV', command=lambda: self.pop_up(AddOppv, 'Add OPPV'))
-        subDevMenu.add_command(label='Delete OPPV', command=lambda: self.pop_up(DelOppv, 'Delete OPPV'))
         subDevMenu.add_command(label='Delete Device', command=lambda: self.pop_up(DelDev, 'Delete Device'))
         subDevMenu.add_command(label='Add Device', command=lambda: self.pop_up(AddDev, 'Add Device'))
-        subDevMenu.add_command(label='Add/Delete Enabler Service', command=lambda: self.pop_up(AddDelESer, 'Add/ Delete Enabler Service'))
-        subDevMenu.add_command(label='Add/Delete Single Service', command=lambda: self.pop_up(AddDelSSer,
-                                                                                               'Add/ Delete Single Service'))
+        subSubMenu.add_command(label='Add OPPV', command=lambda: self.pop_up(AddOppv, 'Add OPPV'))
+        subSubMenu.add_command(label='Delete OPPV', command=lambda: self.pop_up(DelOppv, 'Delete OPPV'))
+        subSubMenu.add_command(label='Add/Delete Enabler Service',
+                               command=lambda: self.pop_up(AddDelESer, 'Add/ Delete Enabler Service'))
+        subSubMenu.add_command(label='Add/Delete Single Service',
+                               command=lambda: self.pop_up(AddDelSSer,'Add/ Delete Single Service'))
+        subSubMenu.add_command(label='Modify Service/Replace Offer',
+                               command=lambda: self.pop_up(ModSer, 'Modify Service/Replace Offer'))
+        subSubMenu.add_command(label='Add Multiple Services',
+                               command=lambda: self.pop_up(AddMulSer, 'Add Multiple Services'))
+
+        # create buttons for different sections
+        btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs')
+        btnSubs.pack(side=TOP, fill=BOTH, expand=1)
+        btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev')
+        btnDev.pack(side=TOP, fill=BOTH, expand=1)
+        btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
+        btnSett.pack(side=TOP, fill=BOTH, expand=1)
+
+        # swtich frames
         self.frames = {}
-        # create buttons for different section
-        btnSubs = Button(self, text='Subscriber', state=NORMAL, name='btnSubs')
-        btnSubs.pack(side=TOP)
-        btnDev = Button(self, text='Device', state=NORMAL, name='btnDev')
-        btnDev.pack(side=TOP)
-        btnSett = Button(self, text='Settings', state=NORMAL, name='btnSett')
-        btnSett.pack(side=TOP)
         self.show_frame(root, AccountInfo)
+
+
 
     # def enableMenu(self):
     #     if dictionary['householdId'] == '' or 'dictionary' not in dictionary.keys():
@@ -213,10 +253,9 @@ class Boa(Tk):
         # arrange on showing the frame
         frame = frame_name(root, self)
         self.frames[frame_name] = frame
-        frame.pack(side=LEFT)
+        frame.pack(side=RIGHT)
 
     def show_frame(self, root, cont):
-        # show the frame. If there is a dictionary, key in the values first.
         self.page_arrange(root, cont)
         frame = self.frames[cont]
         frame.tkraise()
@@ -234,7 +273,7 @@ class AccountInfo(Frame):
     # create menu page with all the button.
     def __init__(self, root, controller):
         Frame.__init__(self, root)
-        self.name = 'AccountInfo'
+        self.name = 'Account Info'
         self.root = root
         self.update()
         self.update_idletasks()
@@ -286,9 +325,6 @@ class CreateSubs(Frame):
         param_names = {'Household ID': 'householdId', 'Device ID': 'deviceId', 'Account ID': 'accountId',
                        'SmartCard ID': 'smartCardId', 'Subscriber ID': 'subscriberId', 'Offer Key': 'offerKey',
                        'Bouquet ID': 'bouquetId', 'Zip Code': 'zipCode'}
-        # temp_file['Community']['value'] = 'Malaysia Live'
-        # temp_file['Population ID'] = {'key': 'populationId', 'value': 1}
-        # temp_file['Currency'] = {'key': 'currency', 'value': '0458'}
         param_dict['community'] = CreateColumn(root, 'Community', 12, name='community', fixed_text='Malaysia Live')
         param_dict['populationId'] = CreateColumn(root, 'Population ID', 13, name='populationId', fixed_text='1')
         param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 14, name='authorizationType',
@@ -709,6 +745,104 @@ class AddDelESer(Frame):
             getReponse('Delete Enabler Service')
         self.root.destroy()
 
+
+class ChangeOwnership(Frame):
+    def __init__(self, root):
+        self.root = root
+        Frame.__init__(self, self.root)
+        self.name = 'Change Ownership'
+        param_dict = {}
+        msgLabel = Label(root, text='Key in the following details.')
+        msgLabel.grid(column=2, columnspan=2)
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton.grid(row=12, column=3, sticky='W')
+        cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
+        cancelButton.grid(row=12, column=3, sticky='E')
+        if 'householdId' in dictionary.keys():
+            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
+            param_dict[col.name] = col
+        else:
+            col = CreateColumn(root, 'Household ID', 3, name='householdId')
+            param_dict[col.name] = col
+        col = CreateColumn(root, 'Account ID', 4, name='accountId')
+        param_dict[col.name] = col
+        col = CreateColumn(root, 'Bouquet ID', 5, name='bouquetId')
+        param_dict[col.name] = col
+        col = CreateColumn(root, 'Zip Code', 6, name='zipCode')
+        param_dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key', 7, name='offerKey')
+        param_dict[col.name] = col
+        param_dict['community'] = CreateColumn(root, 'Community', 8, name='community', fixed_text='Malaysia Live')
+        param_dict['populationId'] = CreateColumn(root, 'Population ID', 9, name='populationId', fixed_text='1')
+        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 10, name='authorizationType',
+                                                       fixed_text='SUBSCRIPTION')
+        param_dict['currency'] = CreateColumn(root, 'Currency', 11, name='currency', fixed_text='0528')
+
+    def sendApi(self, param_dict):
+        widget_name = self.name
+        storeDictionary(param_dict)
+        getReponse(widget_name)
+        self.root.destroy()
+
+
+class ModSer(Frame):
+    def __init__(self, root):
+        self.root = root
+        Frame.__init__(self, self.root)
+        self.name = 'Modify Services'
+        param_dict = {}
+        msgLabel = Label(root, text='Key in the following details.')
+        msgLabel.grid(column=2, columnspan=2)
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton.grid(row=6, column=3, sticky='W')
+        cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
+        cancelButton.grid(row=6, column=3, sticky='E')
+        if 'householdId' in dictionary.keys():
+            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
+            param_dict[col.name] = col
+        else:
+            col = CreateColumn(root, 'Household ID', 3, name='householdId')
+            param_dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key', 4, name='offerKey')
+        param_dict[col.name] = col
+        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 5, name='authorizationType',
+                                                       fixed_text='SUBSCRIPTION')
+
+    def sendApi(self, param_dict):
+        widget_name = self.name
+        storeDictionary(param_dict)
+        getReponse(widget_name)
+        self.root.destroy()
+
+
+class AddMulSer(Frame):
+    def __init__(self, root):
+        self.root = root
+        Frame.__init__(self, self.root)
+        self.name = 'Add Multiple Services'
+        param_dict = {}
+        msgLabel = Label(root, text='Key in the following details.')
+        msgLabel.grid(column=2, columnspan=2)
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        saveButton.grid(row=5, column=3, sticky='W')
+        cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
+        cancelButton.grid(row=5, column=3, sticky='E')
+        if 'householdId' in dictionary.keys():
+            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
+            param_dict[col.name] = col
+        else:
+            col = CreateColumn(root, 'Household ID', 2, name='householdId')
+            param_dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key', 3, name='offerKey')
+        param_dict[col.name] = col
+        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 4, name='authorizationType',
+                                                       fixed_text='SUBSCRIPTION')
+
+    def sendApi(self, param_dict):
+        widget_name = self.name
+        storeDictionary(param_dict)
+        getReponse(widget_name)
+        self.root.destroy()
 
 class Device(Frame):
     # create menu page with all the button.
