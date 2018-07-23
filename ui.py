@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import ttk
 import requests
 import json
 import xml.etree.ElementTree as et
@@ -9,6 +10,8 @@ FONT = 'Vandana', 12
 # open file
 with open('config.json') as f:
     file = json.load(f)
+
+txtfile = open('packagesinfo.txt', 'r')
 
 # usable class
 
@@ -38,7 +41,7 @@ def storeDictionary(param_dict):
             # delete the entry once the data is stored.
             if v.entry.__class__.__name__ == 'Entry':
                 v.entry.delete(0, 'end')
-    return temp_file
+    print(temp_file)
 
 
 def getParam(apinfo):
@@ -64,6 +67,7 @@ def getSubscriptionsXML(apinfo):
         finalXML = finalXML.join(slot)
 
     xml = et.parse(apinfo)
+    print(xml)
     subscriptionList = xml.find('subscriptions')
     subscriptionList.text = finalXML
     return apinfo
@@ -155,32 +159,39 @@ class CreateColumn(Frame):
         self.name = name
         char_text = StringVar()
         if fixed_text is None:
-            self.entry = Entry(root, textvariable=char_text)
-            self.entry.grid(row=r, column=3, sticky='W')
+            if widget_type == 'entry_combo':
+                self.entry = ttk.Combobox(root)
+                self.entry.grid(row=r, column=3)
+                self.entry['values'] = optionList
+            elif widget_type == 'entry_list':
+                scrollbar = Scrollbar(root)
+                scrollbar.grid(row=r, column=3)
+                self.entry = Listbox(root, yscrollcomman=scrollbar.set)
+                self.entry.grid(row=r, column=3)
 
+                for i in optionList:
+                    self.entry.insert(END, i)
+                # attach listbox to scrollbar
+                scrollbar.config(command=self.entry.yview)
+            else:
+                self.entry = Entry(root, textvariable=char_text)
+                self.entry.grid(row=r, column=3, sticky='W')
         else:
             self.entry = Label(root, text=fixed_text)
             self.entry.grid(row=r, column=3, sticky='W')
 
-        if widget_type == 'entry_list':
-            scrollbar = Scrollbar(root)
-            self.entry = Listbox(root, yscrollcommand=scrollbar.set)
-            scrollbar.grid(row=r, column=3)
-            for item in optionList:
-                self.entry.insert(END, item)
-            self.entry.grid(row=r, column=3)
-            scrollbar.config(command=self.entry.yview)
-
     def get_value(self):
         # to get the value of the entry / label so that it can be passed into dictionary
-        if self.entry.__class__.__name__ == 'Listbox':
-            return self.entry.get(self.entry.curselection())
+        if self.entry.__class__.__name__ == 'Combobox':
+            return self.entry.get()
 
         elif self.entry.__class__.__name__ == 'Entry':
             return self.entry.get()
 
         elif self.entry.__class__.__name__ == 'Label':
             return self.entry.cget('text')
+        elif self.entry.__class__.__name__ == 'Listbox':
+            return self.entry.get()
 
 
 class Boa(Tk):
@@ -188,12 +199,10 @@ class Boa(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
         self.wm_title('BOA Application')
-        root = Frame(self, width=1080, height=720)
-        root.pack_propagate(0)
+        root = Frame(self, width=250, height=300)
         root.pack(side=RIGHT)
-        root.grid_columnconfigure(1, weight=1)
-        root.grid_rowconfigure(1, weight=1)
-
+        root.pack_propagate(0)
+        root.grid_rowconfigure(0, weight=1)
         # create menu bar for actions
         menu = tk.Menu(root)
         tk.Tk.config(self, menu=menu)
@@ -242,7 +251,6 @@ class Boa(Tk):
         self.show_frame(root, AccountInfo)
 
 
-
     # def enableMenu(self):
     #     if dictionary['householdId'] == '' or 'dictionary' not in dictionary.keys():
     #         count=1
@@ -253,7 +261,8 @@ class Boa(Tk):
         # arrange on showing the frame
         frame = frame_name(root, self)
         self.frames[frame_name] = frame
-        frame.pack(side=RIGHT)
+        frame.pack_propagate(0)
+        frame.pack(fill=BOTH, expand=1)
 
     def show_frame(self, root, cont):
         self.page_arrange(root, cont)
@@ -272,9 +281,9 @@ class Boa(Tk):
 class AccountInfo(Frame):
     # create menu page with all the button.
     def __init__(self, root, controller):
-        Frame.__init__(self, root)
-        self.name = 'Account Info'
         self.root = root
+        Frame.__init__(self, self.root)
+        self.name = 'Account Info'
         self.update()
         self.update_idletasks()
         param_dict = {}
@@ -323,18 +332,20 @@ class CreateSubs(Frame):
         self.name = 'Create New Subscriber'
         param_dict = {}
         param_names = {'Household ID': 'householdId', 'Device ID': 'deviceId', 'Account ID': 'accountId',
-                       'SmartCard ID': 'smartCardId', 'Subscriber ID': 'subscriberId', 'Offer Key': 'offerKey',
+                       'SmartCard ID': 'smartCardId', 'Subscriber ID': 'subscriberId',
                        'Bouquet ID': 'bouquetId', 'Zip Code': 'zipCode'}
-        param_dict['community'] = CreateColumn(root, 'Community', 12, name='community', fixed_text='Malaysia Live')
-        param_dict['populationId'] = CreateColumn(root, 'Population ID', 13, name='populationId', fixed_text='1')
-        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 14, name='authorizationType',
+        param_dict['offerKey'] = CreateColumn(root, 'Offer Key', 11, optionList=[1,2,3,4,5], name='offerKey',
+                                              widget_type='entry_list')
+        param_dict['bssFullType'] = CreateColumn(root, 'bssFullType', 12, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
+                                                 name='bssFullType', widget_type='entry_combo')
+        param_dict['community'] = CreateColumn(root, 'Community', 13, name='community', fixed_text='Malaysia Live')
+        param_dict['populationId'] = CreateColumn(root, 'Population ID', 14, name='populationId', fixed_text='1')
+        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 15, name='authorizationType',
                                                        fixed_text='SUBSCRIPTION')
-        param_dict['currency'] = CreateColumn(root, 'Currency', 15, name='currency', fixed_text='0528')
+        param_dict['currency'] = CreateColumn(root, 'Currency', 16, name='currency', fixed_text='0528')
         for i, p in enumerate(param_names.keys()):
             item = CreateColumn(root, p, i + 3, name=param_names[p])
             param_dict.update({param_names[p]: item})
-        param_dict['bssFullType'] = CreateColumn(root, 'bssFullType', 16, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
-                                                 name='bssFullType', widget_type='entry_list')
         saveButton = Button(root, text='Create', command=lambda: self.sendApi(param_dict))
         saveButton.grid(row=17, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
@@ -669,7 +680,7 @@ class AddDev(Frame):
         col = CreateColumn(root, 'Subscriber ID', 5, name='subscriberId')
         param_dict[col.name] = col
         param_dict['bssFullType'] = CreateColumn(root, 'bssFullType', 6, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
-                                                 name='bssFullType', widget_type='entry_list')
+                                                 name='bssFullType', widget_type='entry_combo')
 
     def sendApi(self, param_dict):
         widget_name = self.name
@@ -690,7 +701,7 @@ class AddDelSSer(Frame):
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
-        col = CreateColumn(root, 'Action', 5, optionList=['Add', 'Delete'], name='action', widget_type='entry_list')
+        col = CreateColumn(root, 'Action', 5, optionList=['Add', 'Delete'], name='action', widget_type='entry_combo')
         param_dict[col.name] = col
         if 'householdId' in dictionary.keys():
             col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
@@ -724,7 +735,7 @@ class AddDelESer(Frame):
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
-        listbox = CreateColumn(root, 'Action', 2, optionList=['Add', 'Delete'], name='action', widget_type='entry_list')
+        listbox = CreateColumn(root, 'Action', 2, optionList=['Add', 'Delete'], name='action', widget_type='entry_combo')
         param_dict[listbox.name] = listbox
         if 'householdId' in dictionary.keys():
             col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
@@ -733,7 +744,7 @@ class AddDelESer(Frame):
             col = CreateColumn(root, 'Household ID', 3, name='householdId')
             param_dict[col.name] = col
         col = CreateColumn(root, 'Enabler Services', 4, optionList=['PPV_ENABLER', 'PVR_ENABLER', 'VOD_ENABLER'],
-                           name='enablerServices',  widget_type='entry_list')
+                           name='enablerServices',  widget_type='entry_combo')
         col.config(selectmode=MULTIPLE)
         param_dict[col.name] = col
 
@@ -843,6 +854,9 @@ class AddMulSer(Frame):
         storeDictionary(param_dict)
         getReponse(widget_name)
         self.root.destroy()
+
+# make frame for device.
+
 
 class Device(Frame):
     # create menu page with all the button.
