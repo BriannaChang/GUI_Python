@@ -4,8 +4,9 @@ from tkinter import ttk
 import requests
 import json
 import xml.etree.ElementTree as et
+from datetime import datetime
 
-FONT = 'Vandana', 12
+FONT = 'Vandana', 20
 offerkey_optionlist = []
 # open file
 with open('config.json') as f:
@@ -31,19 +32,11 @@ def storeDictionary(param_dict):
     # store data keyed in by the user into a general dictionary
     for k, v in param_dict.items():
         if k == 'offerKey':
-            if isinstance(v, int):
-                pass
-            else:
-                v = re.findall('\[([\d]+)\]', v.get_value())
-                v = v[0]
             temp_file.update({k: v})
         if isinstance(v, str):
             temp_file.update({k: v})
         else:
             temp_file.update({k: v.get_value()})
-            # delete the entry once the data is stored.
-            if v.entry.__class__.__name__ == 'Entry':
-                v.entry.delete(0, 'end')
     print(temp_file)
 
 
@@ -55,12 +48,11 @@ def getParam(apinfo):
         if item in temp_file.keys():
             # fill in the parameter
             apinfo = apinfo.replace(''.join(['{', item, '}']), temp_file[item])
-    print(apinfo)
     return apinfo
 
 
 def getSubscriptionsXML(apinfo):
-    # create a set of xml to slot in.
+    # create a set of xml to slot in for offer key.
     finalXML = ''
     slot = '<subscription><offerKey>{offerKey}</offerKey><authorizationType>SUBSCRIPTION</authorizationType>' \
            '</subscription>'
@@ -89,21 +81,34 @@ def getReponse(widget_name):
         param = getParam(xml)
     if apinfo['URL'] != '':
         url = getParam(apinfo['URL'])
-    # if apinfo['Method'] == 'POST':
-    #     response = requests.post(url, param)
-    # elif apinfo['Method'] == 'PUT':
-    #     response = requests.put(url, param)
-    # elif apinfo['Method'] == 'GET':
-    #     response = requests.get(url, param)
-    # else:
-    #     response = requests.delete(url)
-    # return response.text
+    if apinfo['Method'] == 'POST':
+        response = requests.post(url, param)
+    elif apinfo['Method'] == 'PUT':
+        response = requests.put(url, param)
+    elif apinfo['Method'] == 'GET':
+        if param == '':
+            response = requests.get(url)
+        else:
+            response = requests.get(url, param)
+    else:
+        response = requests.delete(url)
+    return response.text
+
+# show toast message when the text is return
+
+
+def toastMessage(response):
+    response = response.split('<body>')[0]
+    if response.split('<errorMessage>')[1] == '</errorMessage>':
+        return True
+    else:
+        return False
+
 
 # when household API is called, parse the XML into dictionary
 
-
-def parseHouseholdDetails(xml):
-    fileToParse = xml
+def parseHouseholdDetails():
+    fileToParse = getReponse('Household')
     tree = et.parse(fileToParse)
     branch = tree.find('household')
     # make a dictionary with the first branch in household
@@ -212,9 +217,7 @@ class Boa(Tk):
         Tk.__init__(self, *args, **kwargs)
         self.wm_title('BOA Application')
         root = Frame(self, width=250, height=300)
-        root.pack(side=RIGHT)
-        root.pack_propagate(0)
-        root.grid_rowconfigure(0, weight=1)
+        root.pack()
         # create menu bar for actions
         menu = tk.Menu(root)
         tk.Tk.config(self, menu=menu)
@@ -254,24 +257,9 @@ class Boa(Tk):
         subSubMenu.add_command(label='Add Multiple Services',
                                command=lambda: self.pop_up(AddMulSer, 'Add Multiple Services'))
 
-        # create buttons for different sections
-        btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs')
-        btnSubs.pack(side=TOP, fill=BOTH, expand=1)
-        btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev')
-        btnDev.pack(side=TOP, fill=BOTH, expand=1)
-        btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
-        btnSett.pack(side=TOP, fill=BOTH, expand=1)
-
         # swtich frames
         self.frames = {}
         self.show_frame(root, AccountInfo)
-
-
-    # def enableMenu(self):
-    #     if dictionary['householdId'] == '' or 'dictionary' not in dictionary.keys():
-    #         count=1
-    #         for menu in [self.subMenu, self.subDevMenu, self.subSettMenu]:
-    #             menu.component
 
     def page_arrange(self, root, frame_name):
         # arrange on showing the frame
@@ -300,22 +288,30 @@ class AccountInfo(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Account Info'
-        self.update()
-        self.update_idletasks()
+        # create buttons for different sections
+        btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs')
+        btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
+        btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev')
+        btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
+        btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
+        btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
+
+        # account info page
         param_dict = {}
         logInCredentials = CreateColumn(self, 'Household ID', 2, name='householdId')
         param_dict['householdId'] = logInCredentials
-        logBtn = Button(self, text='Log in', command=lambda: self.logInUser())
+        logBtn = Button(self, text='Log in', command=lambda: self.logInUser(param_dict))
         logBtn.grid(row=2, column=4, sticky='W')
-        Label(self, text='Account info').grid(column=2, columnspan=3)
-        param_dict.update({p: CreateColumn(self, p, i + 4, name=param_names[p], fixed_text='') for i, p in
+        Label(self, text='Account info').grid(row =1, column=2, columnspan=3)
+        param_dict.update({p: CreateColumn(self, p, i + 3, name=param_names[p], fixed_text='') for i, p in
                            enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
                            and p != 'Offer Key'})
         refreshBtn= Button(self, text='Update', command=lambda: self.refresh())
-        refreshBtn.grid(column=3, sticky='W')
+        refreshBtn.grid(row=17, column=3, sticky='W')
 
-    def logInUser(self):
-        parseHouseholdDetails('household.xml')
+    def logInUser(self, param_dict):
+        storeDictionary(param_dict)
+        parseHouseholdDetails()
         self.refresh()
 
     def refresh(self):
@@ -326,7 +322,10 @@ class AccountInfo(Frame):
                 if text in param_names.keys():
                     param = param_names[text]
                     if param in dictionary.keys():
-                        objectList[item+1].config(text=dictionary[param])
+                        if objectList[item+1].widgetName == 'entry':
+                            print(objectList[item+1].get())
+                        else:
+                            objectList[item + 1].config(text=dictionary[param])
                     else:
                         selected_branch = dictionary['devices']['device']
                         if param in selected_branch.keys():
@@ -370,7 +369,8 @@ class CreateSubs(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -397,7 +397,8 @@ class SusReSubs(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -424,7 +425,8 @@ class RefreshRepair(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -453,7 +455,8 @@ class ResetPin(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -482,7 +485,8 @@ class DelSubs(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -510,7 +514,8 @@ class ChangeBou(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -538,7 +543,8 @@ class ChangeRegKey(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -580,33 +586,83 @@ class ReplaceCard(Frame):
 
 class AddOppv(Frame):
     def __init__(self, root):
+        time_set = []
+        month_list = []
+        day_list =[]
+        current_year = datetime.now().year
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Add OPPV'
+        self.date = ''
         param_dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
         saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
-        saveButton.grid(row=6, column=3, sticky='W')
+        saveButton.grid(row=9, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
-        cancelButton.grid(row=6, column=3, sticky='E')
+        cancelButton.grid(row=9, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
             col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
             param_dict[col.name] = col
         else:
             col = CreateColumn(root, 'Household ID', 2, name='householdId')
             param_dict[col.name] = col
-        col = CreateColumn(root, 'Offer Key(s)', 3, name='offerKey')
+        col = CreateColumn(root, 'Offer Key(s)', 3, optionList=offerkey_optionlist, name='offerKey', widget_type='entry_combo')
         param_dict[col.name] = col
-        col = CreateColumn(root, 'Expiry Date', 4, name='expirationDate')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'Authorization Type', 5, name='authorizationType', fixed_text='PPV')
+        # expiry date
+        date_label = Label(root, text='Expiry Date(Year)')
+        date_label.grid(row=4, column=2, sticky='W')
+        self.year = ttk.Combobox(root)
+        self.year.grid(row=4, column=3)
+        self.year['values'] = [current_year + i for i in range(0, 20)]
+        Label(root, text='Expiry Date(Month)').grid(row=5, column=2, sticky='W')
+        self.month = ttk.Combobox(root)
+        self.month.grid(row=5, column=3, sticky='W')
+        for i in range(1, 13):
+            if len(str(i)) == 1:
+                str_i = ''.join([str(0), str(i)])
+            else:
+                str_i = str(i)
+            month_list.append(str_i)
+        self.month['values'] = month_list
+        Label(root, text='Expiry Date(Day)').grid(row=6, column=2, sticky='W')
+        self.day = ttk.Combobox(root)
+        self.day.grid(row=6, column=3, sticky='W')
+        for i in range(1, 32):
+            if len(str(i)) == 1:
+                str_i = ''.join([str(0), str(i)])
+            else:
+                str_i = str(i)
+            day_list.append(str_i)
+        self.day['values'] = day_list
+        # expiry time
+        Label(root, text='Expiry Time').grid(row=7, column=2, sticky='W')
+        self.time = ttk.Combobox(root)
+        self.time.grid(row=7, column=3, sticky='W')
+        for i in range(0, 25):
+            for j in range(0, 60):
+                if len(str(i)) == 1:
+                    str_i = ''.join([str(0), str(i)])
+                else:
+                    str_i = str(i)
+                if len(str(j)) == 1:
+                    str_j = ''.join([str(0), str(j)])
+                else:
+                    str_j = str(j)
+                time = ''.join([str_i, ':', str_j, ':', '00'])
+                time_set.append(time)
+        self.time['values'] = time_set
+        col = CreateColumn(root, 'Authorization Type', 8, name='authorizationType', fixed_text='PPV')
         param_dict[col.name] = col
 
     def sendApi(self, param_dict):
+        self.date = ''.join([self.year.get(), '-', self.month.get(), '-', self.day.get()])
+        self.time_toset = ''.join(['T', self.time.get(), 'Z'])
+        param_dict['expirationDate'] = ''.join([self.date, self.time_toset])
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -634,7 +690,8 @@ class DelOppv(Frame):
     def sendApi(self, param_dict):
         storeDictionary(param_dict)
         getReponse('Remove OPPV - Get')
-        getReponse('Remove OPPV - Delete')
+        response = getReponse('Remove OPPV - Delete')
+        print(response)
         self.root.destroy()
 
 
@@ -665,7 +722,8 @@ class DelDev(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -699,7 +757,8 @@ class AddDev(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -727,7 +786,8 @@ class DelSSer(Frame):
 
     def sendApi(self, param_dict):
         storeDictionary(param_dict)
-        getReponse('Delete Single Service')
+        response = getReponse('Delete Single Service')
+        print(response)
         self.root.destroy()
 
 
@@ -756,7 +816,8 @@ class AddSSer(Frame):
 
     def sendApi(self, param_dict):
         storeDictionary(param_dict)
-        getReponse('Add Single Service')
+        response = getReponse('Add Single Service')
+        print(response)
         self.root.destroy()
 
 
@@ -813,7 +874,8 @@ class DelESer(Frame):
 
     def sendApi(self, param_dict):
         storeDictionary(param_dict)
-        getReponse('Delete Enabler Service')
+        response = getReponse('Delete Enabler Service')
+        print(response)
         self.root.destroy()
 
 class ChangeOwnership(Frame):
@@ -852,7 +914,8 @@ class ChangeOwnership(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -883,7 +946,8 @@ class ModSer(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 
@@ -913,7 +977,8 @@ class AddMulSer(Frame):
     def sendApi(self, param_dict):
         widget_name = self.name
         storeDictionary(param_dict)
-        getReponse(widget_name)
+        response = getReponse(widget_name)
+        print(response)
         self.root.destroy()
 
 # make frame for device.
