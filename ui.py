@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+import tkinter.messagebox as msgBox
 import requests
 import json
 import xml.etree.ElementTree as et
@@ -15,17 +16,20 @@ txtfile = open('packagesinfo.txt', 'r')
 for line in txtfile:
     offerkey_optionlist.append(line)
 
-# usable class
 
 # dictionary to refer to. Will consist all the data collected from API.
 # will be updated within the application each time until the application is destroyed.
 # tem_file is to store information needed to send over to the API.
 dictionary = {}
 temp_file = {}
-param_names = {'Household ID' : 'householdId', 'Device ID': 'deviceId', 'Account ID': 'accountId', 'SmartCard ID': 'smartCardId',
-                   'Subscriber ID': 'subscriberId', 'Offer Key': 'offerKey', 'Bouquet ID': 'bouquetId',
-                   'bssFullType': 'bssFullType', 'Zip Code': 'zipCode', 'Community': 'community',
-                   'Authorization Type': 'authorizationType', 'Population ID': 'populationId', 'Currency': 'currency'}
+param_names = {'Household ID': 'householdId', 'Device ID': 'deviceId', 'Account ID': 'accountId',
+               'SmartCard ID': 'smartCardId', 'Subscriber ID': 'subscriberId', 'Bouquet ID': 'bouquetId',
+               'bssFullType': 'bssFullType', 'Zip Code': 'zipCode', 'Community': 'community',
+               'Authorization Type': 'authorizationType', 'Population ID': 'populationId', 'Currency': 'currency',
+               'Offer Key': 'offerKey', }
+device_list = {'Device ID': 'deviceId', 'Device Type': 'deviceType', 'bssFullType': 'bssFullType',
+               'Create Date': 'createDate', 'Last Update Date': 'lastUpdateDate', 'Subscriber ID': 'subscriberId',
+               'SmartCard ID': 'smartCardId'}
 
 
 def storeDictionary(param_dict):
@@ -37,7 +41,7 @@ def storeDictionary(param_dict):
             temp_file.update({k: v})
         else:
             temp_file.update({k: v.get_value()})
-    print(temp_file)
+    print('temp file', temp_file)
 
 
 def getParam(apinfo):
@@ -81,34 +85,34 @@ def getReponse(widget_name):
         param = getParam(xml)
     if apinfo['URL'] != '':
         url = getParam(apinfo['URL'])
-    if apinfo['Method'] == 'POST':
-        response = requests.post(url, param)
-    elif apinfo['Method'] == 'PUT':
-        response = requests.put(url, param)
-    elif apinfo['Method'] == 'GET':
-        if param == '':
-            response = requests.get(url)
+    try:
+        if apinfo['Method'] == 'POST':
+            response = requests.post(url, param)
+        elif apinfo['Method'] == 'PUT':
+            response = requests.put(url, param)
+        elif apinfo['Method'] == 'GET':
+            if param == '':
+                response = requests.get(url)
+            else:
+                response = requests.get(url, param)
         else:
-            response = requests.get(url, param)
-    else:
-        response = requests.delete(url)
-    return response.text
-
-# show toast message when the text is return
-
-
-def toastMessage(response):
-    response = response.split('<body>')[0]
-    if response.split('<errorMessage>')[1] == '</errorMessage>':
-        return True
-    else:
-        return False
+            response = requests.delete(url)
+        # show toast message
+        res_msg = response.text
+        res_msg = res_msg.split('<body>')[0]
+        if res_msg.split('<errorMessage>')[1] == '</errorMessage>':
+            msgBox.showinfo('Request successful', 'Request successful.')
+        else:
+            msgBox.showinfo('Request unsuccessful', 'Please make sure the information is correctly filled in.')
+    except requests.exceptions.ConnectionError:
+        # show toast message
+        msgBox.showinfo('CONNECTION ERROR', 'Please make sure you have internet connection.')
 
 
 # when household API is called, parse the XML into dictionary
-
 def parseHouseholdDetails():
-    fileToParse = getReponse('Household')
+    fileToParse = 'household.xml'
+    # fileToParse = getReponse('Household')
     tree = et.parse(fileToParse)
     branch = tree.find('household')
     # make a dictionary with the first branch in household
@@ -147,34 +151,32 @@ def parseHouseholdDetails():
     return dictionary
 
 # Create text box to avoid repetitive codes.
-
-
 class CreateColumn(Frame):
     # label text is for the name of the column
     # optionList is the list for scrolling options
     # name is for the widget naming
     # widget_type is to indicate when listing is needed.
     # fixed_text is to differentiate to use entry or label column.
-    def __init__(self, root, label_text, r, optionList=[], name="", widget_type=None, fixed_text=None):
+    def __init__(self, root, label_text, r, c, optionList=[], name="", widget_type=None, fixed_text=None):
         Frame.__init__(self, root)
         label = Label(root, text=label_text, anchor="e")
-        label.grid(row=r, column=2, sticky='W')
+        label.grid(row=r, column=c, sticky='W')
         self.entry = None
         self.name = name
         char_text = StringVar()
         if fixed_text is None:
             if widget_type == 'entry_combo':
                 self.entry = ttk.Combobox(root)
-                self.entry.grid(row=r, column=3)
+                self.entry.grid(row=r, column=c+1)
                 self.entry['values'] = optionList
             elif widget_type == 'entry_list':
                 scrollbar_goright = Scrollbar(root, orient=HORIZONTAL)
-                scrollbar_goright.grid(row=r+1, column=3, sticky='SEW')
+                scrollbar_goright.grid(row=r+1, column=c+1, sticky='SEW')
                 scrollbar_godown = Scrollbar(root, orient=VERTICAL)
-                scrollbar_godown.grid(row=r, column=4, sticky='WNS')
+                scrollbar_godown.grid(row=r, column=c+2, sticky='WNS')
                 self.entry = Listbox(root, yscrollcommand=scrollbar_godown.set)
                 self.entry.config(selectmode='multiple')
-                self.entry.grid(row=r, column=3, sticky='W')
+                self.entry.grid(row=r, column=c+1, sticky='W')
 
                 for i in optionList:
                     self.entry.insert(END, i)
@@ -186,7 +188,7 @@ class CreateColumn(Frame):
                 self.entry = Entry(root, textvariable=char_text)
                 self.entry.grid(row=r, column=3, sticky='W')
         else:
-            self.entry = Label(root, text=fixed_text)
+            self.entry = Label(root, text=fixed_text, width=20)
             self.entry.grid(row=r, column=3, sticky='W')
 
     def get_value(self):
@@ -217,7 +219,10 @@ class Boa(Tk):
         Tk.__init__(self, *args, **kwargs)
         self.wm_title('BOA Application')
         root = Frame(self, width=250, height=300)
-        root.pack()
+        self.root = root
+        root.pack(side="top", fill="both", expand=True)
+        root.grid_rowconfigure(0, weight=1)
+        root.grid_columnconfigure(0, weight=1)
         # create menu bar for actions
         menu = tk.Menu(root)
         tk.Tk.config(self, menu=menu)
@@ -259,17 +264,16 @@ class Boa(Tk):
 
         # swtich frames
         self.frames = {}
-        self.show_frame(root, AccountInfo)
+        self.show_frame(AccountInfo)
 
-    def page_arrange(self, root, frame_name):
-        # arrange on showing the frame
-        frame = frame_name(root, self)
-        self.frames[frame_name] = frame
-        frame.pack_propagate(0)
-        frame.pack(fill=BOTH, expand=1)
+    def arrange_page(self, frame_name):
+            # arrange on showing the frame
+            frame = frame_name(self.root, self)
+            self.frames[frame_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
-    def show_frame(self, root, cont):
-        self.page_arrange(root, cont)
+    def show_frame(self, cont):
+        self.arrange_page(cont)
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -279,37 +283,66 @@ class Boa(Tk):
         self.newWindow.wm_title(title)
         frame(self.newWindow)
 
-# Subscriber page. Account info is empty before log in. Household ID will be needed to log in.
-
 
 class AccountInfo(Frame):
+    # Subscriber page. Account info is empty before log in. Household ID will be needed to log in.
     # create menu page with all the button.
     def __init__(self, root, controller):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Account Info'
         # create buttons for different sections
-        btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs')
-        btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
-        btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev')
-        btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
-        btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
-        btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
+        # btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs',
+        #                  command=lambda: controller.show_frame('AccountInfo'))
+        # btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
+        # btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev',
+        #                 command=lambda: controller.show_frame('Device'))
+        # btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
+        # btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
+        # btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
 
         # account info page
-        param_dict = {}
-        logInCredentials = CreateColumn(self, 'Household ID', 2, name='householdId')
-        param_dict['householdId'] = logInCredentials
-        logBtn = Button(self, text='Log in', command=lambda: self.logInUser(param_dict))
-        logBtn.grid(row=2, column=4, sticky='W')
-        Label(self, text='Account info').grid(row =1, column=2, columnspan=3)
-        param_dict.update({p: CreateColumn(self, p, i + 3, name=param_names[p], fixed_text='') for i, p in
-                           enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
-                           and p != 'Offer Key'})
-        refreshBtn= Button(self, text='Update', command=lambda: self.refresh())
-        refreshBtn.grid(row=17, column=3, sticky='W')
+        self.dict = {}
+        Label(self, text='Account info').grid(row=2, column=2, columnspan=3)
+        if 'householdId' in dictionary.keys():
+            logInCredentials = CreateColumn(self, 'Household ID', 1, 2, name='householdId',
+                                            fixed_text=dictionary['householdId'])
+            self.dict['householdId'] = logInCredentials
+            self.dict.update({p: CreateColumn(self, p, i + 2, 2, name=param_names[p], fixed_text='') for i, p in
+                               enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
+                               and p != 'Offer Key'})
+            controller.refresh()
+        else:
+            logInCredentials = CreateColumn(self, 'Household ID', 1, 2, name='householdId', fixed_text='')
+            self.dict['householdId'] = logInCredentials
+            self.dict.update({p: CreateColumn(self, p, i + 2, 2, name=param_names[p], fixed_text='') for i, p in
+                               enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
+                               and p != 'Offer Key'})
+        logBtn = Button(self, text='Log in', command=lambda: self.logInUser())
+        logBtn.grid(row=1, column=4, sticky='W', columnspan=2)
+        # refreshBtn= Button(self, text='Update', command=lambda: self.refresh())
+        # refreshBtn.grid(row=17, column=3, sticky='W')
 
-    def logInUser(self, param_dict):
+        # device page
+        Label(self, text='Device & Subscription Information').grid(row=2, column=5, columnspan=3)
+        Label(self, text='Device').grid(row=3, column=5, columnspan=3)
+        # combobox to select device option
+        
+        # for i, p in enumerate(device_list.keys()):
+        #     col = CreateColumn(self, p, i + 4, 5,  name=device_list[p], fixed_text='')
+        #     self.dict[col.name] = col
+        # Label(self, text='Device').grid(column=5, columnspan=3)
+        # if 'authorizations' in dictionary.keys():
+        #     for i, p in enumerate(device_list.keys()):
+        #         col = CreateColumn(self, p, i + 12, 5, name=device_list[p], fixed_text=dictionary['devices']['device'][device_list[p]])
+        #         self.dict[col.name] = col
+        # else:
+        #     for i, p in enumerate(device_list.keys()):
+        #         col = CreateColumn(self, p, i + 12, 5,  name=device_list[p], fixed_text='')
+        #         self.dict[col.name] = col
+
+    def logInUser(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         parseHouseholdDetails()
         self.refresh()
@@ -317,15 +350,16 @@ class AccountInfo(Frame):
     def refresh(self):
         objectList = self.root.winfo_children()[1].winfo_children()
         for item in range(0, len(objectList)):
+            param = ''
             if objectList[item].widgetName == 'label':
                 text = objectList[item].cget('text')
                 if text in param_names.keys():
                     param = param_names[text]
+                elif text in device_list.keys():
+                    param = device_list[text]
+                if param != '':
                     if param in dictionary.keys():
-                        if objectList[item+1].widgetName == 'entry':
-                            print(objectList[item+1].get())
-                        else:
-                            objectList[item + 1].config(text=dictionary[param])
+                        objectList[item + 1].config(text=dictionary[param])
                     else:
                         selected_branch = dictionary['devices']['device']
                         if param in selected_branch.keys():
@@ -345,28 +379,29 @@ class CreateSubs(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Create New Subscriber'
-        param_dict = {}
+        self.dict = {}
         param_names = {'Household ID': 'householdId', 'Device ID': 'deviceId', 'Account ID': 'accountId',
                        'SmartCard ID': 'smartCardId', 'Subscriber ID': 'subscriberId',
                        'Bouquet ID': 'bouquetId', 'Zip Code': 'zipCode'}
-        param_dict['offerKey'] = CreateColumn(root, 'Offer Key(s)', 16, optionList=offerkey_optionlist, name='offerKey',
+        self.dict['offerKey'] = CreateColumn(root, 'Offer Key(s)', 16, 2, optionList=offerkey_optionlist, name='offerKey',
                                               widget_type='entry_list')
-        param_dict['bssFullType'] = CreateColumn(root, 'bssFullType', 11, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
+        self.dict['bssFullType'] = CreateColumn(root, 'bssFullType', 11, 2, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
                                                  name='bssFullType', widget_type='entry_combo')
-        param_dict['community'] = CreateColumn(root, 'Community', 12, name='community', fixed_text='Malaysia Live')
-        param_dict['populationId'] = CreateColumn(root, 'Population ID', 13, name='populationId', fixed_text='1')
-        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 14, name='authorizationType',
+        self.dict['community'] = CreateColumn(root, 'Community', 12, 2, name='community', fixed_text='Malaysia Live')
+        self.dict['populationId'] = CreateColumn(root, 'Population ID', 13, 2, name='populationId', fixed_text='1')
+        self.dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 14, 2, name='authorizationType',
                                                        fixed_text='SUBSCRIPTION')
-        param_dict['currency'] = CreateColumn(root, 'Currency', 15, name='currency', fixed_text='0528')
+        self.dict['currency'] = CreateColumn(root, 'Currency', 15, 2, name='currency', fixed_text='0528')
         for i, p in enumerate(param_names.keys()):
-            item = CreateColumn(root, p, i + 3, name=param_names[p])
-            param_dict.update({param_names[p]: item})
-        saveButton = Button(root, text='Create', command=lambda: self.sendApi(param_dict))
+            item = CreateColumn(root, p, i + 3, 2, name=param_names[p])
+            self.dict.update({param_names[p]: item})
+        saveButton = Button(root, text='Create', command=lambda: self.sendApi())
         saveButton.grid(row=18, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=18, column=3, sticky='E')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -379,22 +414,23 @@ class SusReSubs(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Suspend/Restore Subscriber'
-        param_dict = {}
+        self.dict = {}
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 1, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 1, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 1, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Household Status To Be', 2, optionList=['ACTIVATED', 'SUSPENDED'],
+            col = CreateColumn(root, 'Household ID', 1, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Household Status To Be', 2, 2, optionList=['ACTIVATED', 'SUSPENDED'],
                            name='householdStatus', widget_type='entry_combo')
-        param_dict[col.name] = col
-        saveButton = Button(root, text='Go', command=lambda: self.sendApi(param_dict))
+        self.dict[col.name] = col
+        saveButton = Button(root, text='Go', command=lambda: self.sendApi())
         saveButton.grid(row=3, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=3, column=3, sticky='E')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -407,22 +443,23 @@ class RefreshRepair(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Refresh card/Repair Box'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Are you sure you want to refresh card/repair box for the following household ID?')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Go', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Go', command=lambda: self.sendApi())
         saveButton.grid(row=3, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=3, column=3)
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
             msgLabel.config(text='Please enter the household ID that you would like to refresh/repair.')
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -435,24 +472,25 @@ class ResetPin(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Reset Pin'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Are you sure you want to reset pin for the following household ID?')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Yes', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Yes', command=lambda: self.sendApi())
         saveButton.grid(row=3, column=3, sticky='W')
         cancelButton = Button(root, text='No', command=lambda: self.root.destroy())
         cancelButton.grid(row=3, column=3)
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
             msgLabel.config(text='Please enter the household ID that you would like to reset pin for.')
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
             saveButton.config(text='Go')
             cancelButton.config(text='Cancel')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -465,24 +503,25 @@ class DelSubs(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Delete Subscriber'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Are you sure you want to delete the following subscriber?')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Yes', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Yes', command=lambda: self.sendApi())
         saveButton.grid(row=3, column=3, sticky='W')
         cancelButton = Button(root, text='No', command=lambda: self.root.destroy())
         cancelButton.grid(row=3, column=3)
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
             msgLabel.config(text='Please enter the household ID for the subscriber that you would like to delete.')
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
             saveButton.config(text='Go')
             cancelButton.config(text='Cancel')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -495,23 +534,24 @@ class ChangeBou(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Change Bouquet ID'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi())
         saveButton.grid(row=4, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=4, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Bouquet ID (HEX)', 3, name='bouquetId')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Bouquet ID (HEX)', 3, 2, name='bouquetId')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -524,23 +564,24 @@ class ChangeRegKey(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Change Region Key'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi())
         saveButton.grid(row=4, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=4, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Zip Code', 3, name='zipCode')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Zip Code', 3, 2, name='zipCode')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -553,31 +594,32 @@ class ReplaceCard(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Replace Card'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi())
         saveButton.grid(row=4, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=4, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'SmartCard ID', 3, name='smartCardId')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'SmartCard ID', 3, 2, name='smartCardId')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         # get deviceId from dictionary or API
         if 'householdId' in dictionary.keys():
-            param_dict['deviceId'] = dictionary['devices']['device']['deviceId']
+            self.dict['deviceId'] = dictionary['devices']['device']['deviceId']
         else:
-            parseHouseholdDetails('household.xml')
-            param_dict['deviceId'] = dictionary['devices']['device']['deviceId']
+            parseHouseholdDetails()
+            self.dict['deviceId'] = dictionary['devices']['device']['deviceId']
         # store info again and call the API
         storeDictionary(param_dict)
         getReponse(widget_name)
@@ -594,21 +636,21 @@ class AddOppv(Frame):
         Frame.__init__(self, self.root)
         self.name = 'Add OPPV'
         self.date = ''
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi())
         saveButton.grid(row=9, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=9, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Offer Key(s)', 3, optionList=offerkey_optionlist, name='offerKey', widget_type='entry_combo')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key(s)', 3, 2, optionList=offerkey_optionlist, name='offerKey', widget_type='entry_combo')
+        self.dict[col.name] = col
         # expiry date
         date_label = Label(root, text='Expiry Date(Year)')
         date_label.grid(row=4, column=2, sticky='W')
@@ -652,13 +694,14 @@ class AddOppv(Frame):
                 time = ''.join([str_i, ':', str_j, ':', '00'])
                 time_set.append(time)
         self.time['values'] = time_set
-        col = CreateColumn(root, 'Authorization Type', 8, name='authorizationType', fixed_text='PPV')
-        param_dict[col.name] = col
+        col = CreateColumn(root, 'Authorization Type', 8, 2, name='authorizationType', fixed_text='PPV')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
         self.date = ''.join([self.year.get(), '-', self.month.get(), '-', self.day.get()])
         self.time_toset = ''.join(['T', self.time.get(), 'Z'])
-        param_dict['expirationDate'] = ''.join([self.date, self.time_toset])
+        self.dict['expirationDate'] = ''.join([self.date, self.time_toset])
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -671,23 +714,24 @@ class DelOppv(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Remove OPPV'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Delete', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Delete', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Purchase ID', 3, name='purchaseId')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Purchase ID', 3, 2, name='purchaseId')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         getReponse('Remove OPPV - Get')
         response = getReponse('Remove OPPV - Delete')
@@ -700,26 +744,27 @@ class DelDev(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Delete Device'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Delete', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Delete', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
         if 'devices' in dictionary.keys():
-            col = CreateColumn(root, 'Device ID', 3, name='deviceId', fixed_text=dictionary['devices']['device']['deviceId'])
+            col = CreateColumn(root, 'Device ID', 3, 2, name='deviceId', fixed_text=dictionary['devices']['device']['deviceId'])
         else:
-            col = CreateColumn(root, 'Device ID', 3, name='deviceId')
-        param_dict[col.name] = col
+            col = CreateColumn(root, 'Device ID', 3, 2, name='deviceId')
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -732,29 +777,30 @@ class AddDev(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Add Device'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi())
         saveButton.grid(row=7, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=7, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Device ID', 3, name='deviceId')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'SmartCard ID', 4, name='smartCardId')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'Subscriber ID', 5, name='subscriberId')
-        param_dict[col.name] = col
-        param_dict['bssFullType'] = CreateColumn(root, 'bssFullType', 6, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Device ID', 3, 2, name='deviceId')
+        self.dict[col.name] = col
+        col = CreateColumn(root, 'SmartCard ID', 4, 2, name='smartCardId')
+        self.dict[col.name] = col
+        col = CreateColumn(root, 'Subscriber ID', 5, 2, name='subscriberId')
+        self.dict[col.name] = col
+        self.dict['bssFullType'] = CreateColumn(root, 'bssFullType', 6, 2, optionList=['IVP-DTH-STB', 'IVP-IP-STB'],
                                                  name='bssFullType', widget_type='entry_combo')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -767,24 +813,25 @@ class DelSSer(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Delete Single Service'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Fill in the following details.')
         msgLabel.grid(column=2, columnspan=3)
-        saveButton = Button(root, text='Go', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Go', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Offer Key', 4, optionList=offerkey_optionlist, name='offerKey',
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key', 4, 2, optionList=offerkey_optionlist, name='offerKey',
                            widget_type='entry_combo')
-        param_dict[col.name] = col
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         response = getReponse('Delete Single Service')
         print(response)
@@ -795,26 +842,27 @@ class AddSSer(Frame):
     def __init__(self, root):
         self.root = root
         Frame.__init__(self, self.root)
-        param_dict = {}
+        self.dict = {}
         self.name = 'Add Single Service'
         msgLabel = Label(root, text='Please fill in the below details.')
         msgLabel.grid(column=2, columnspan=3)
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
         temp_file['authorizationType'] = 'SUBSCRIPTION'
-        col = CreateColumn(root, 'Offer Key', 4, optionList=offerkey_optionlist, name='offerKey',
+        col = CreateColumn(root, 'Offer Key', 4, 2, optionList=offerkey_optionlist, name='offerKey',
                            widget_type='entry_combo')
-        param_dict[col.name] = col
-        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        self.dict[col.name] = col
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi())
         saveButton.grid(row=5, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=5, column=3, sticky='E')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         response = getReponse('Add Single Service')
         print(response)
@@ -826,24 +874,25 @@ class AddESer(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Add Enabler Service'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Enabler Services', 4, optionList=['PPV_ENABLER', 'PVR_ENABLER', 'VOD_ENABLER'],
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Enabler Services', 4, 2, optionList=['PPV_ENABLER', 'PVR_ENABLER', 'VOD_ENABLER'],
                            name='enablerServices',  widget_type='entry_combo')
-        param_dict[col.name] = col
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         getReponse('Add Enabler Service')
 
@@ -855,63 +904,66 @@ class DelESer(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Delete Enabler Service'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Delete', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Delete', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Enabler Services', 4, optionList=['PPV_ENABLER', 'PVR_ENABLER', 'VOD_ENABLER'],
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Enabler Services', 4, 2, optionList=['PPV_ENABLER', 'PVR_ENABLER', 'VOD_ENABLER'],
                            name='enablerServices',  widget_type='entry_combo')
-        param_dict[col.name] = col
+        self.dict[col.name] = col
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         storeDictionary(param_dict)
         response = getReponse('Delete Enabler Service')
         print(response)
         self.root.destroy()
+
 
 class ChangeOwnership(Frame):
     def __init__(self, root):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Change Ownership'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi())
         saveButton.grid(row=13, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=13, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Account ID', 4, name='accountId')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'Bouquet ID', 5, name='bouquetId')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'Zip Code', 6, name='zipCode')
-        param_dict[col.name] = col
-        col = CreateColumn(root, 'Offer Key(s)', 11, optionList=offerkey_optionlist, name='offerKey',
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Account ID', 4, 2, name='accountId')
+        self.dict[col.name] = col
+        col = CreateColumn(root, 'Bouquet ID', 5, 2, name='bouquetId')
+        self.dict[col.name] = col
+        col = CreateColumn(root, 'Zip Code', 6, 2, name='zipCode')
+        self.dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key(s)', 11, 2, optionList=offerkey_optionlist, name='offerKey',
                                               widget_type='entry_list')
-        param_dict[col.name] = col
-        param_dict['community'] = CreateColumn(root, 'Community', 8, name='community', fixed_text='Malaysia Live')
-        param_dict['populationId'] = CreateColumn(root, 'Population ID', 9, name='populationId', fixed_text='1')
-        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 10, name='authorizationType',
+        self.dict[col.name] = col
+        self.dict['community'] = CreateColumn(root, 'Community', 8, 2, name='community', fixed_text='Malaysia Live')
+        self.dict['populationId'] = CreateColumn(root, 'Population ID', 9, 2, name='populationId', fixed_text='1')
+        self.dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 10, 2, name='authorizationType',
                                                        fixed_text='SUBSCRIPTION')
-        param_dict['currency'] = CreateColumn(root, 'Currency', 7, name='currency', fixed_text='0528')
+        self.dict['currency'] = CreateColumn(root, 'Currency', 7, 2, name='currency', fixed_text='0528')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -924,27 +976,28 @@ class ModSer(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Modify Services'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Change', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Change', command=lambda: self.sendApi())
         saveButton.grid(row=7, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=7, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 3, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 3, name='householdId')
-            param_dict[col.name] = col
-        col = CreateColumn(root, 'Offer Key(s)', 5, optionList=offerkey_optionlist, name='offerKey',
+            col = CreateColumn(root, 'Household ID', 3, 2, name='householdId')
+            self.dict[col.name] = col
+        col = CreateColumn(root, 'Offer Key(s)', 5, 2, optionList=offerkey_optionlist, name='offerKey',
                            widget_type='entry_list')
-        param_dict[col.name] = col
-        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 4, name='authorizationType',
+        self.dict[col.name] = col
+        self.dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 4, 2, name='authorizationType',
                                                        fixed_text='SUBSCRIPTION')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
         widget_name = self.name
+        param_dict = self.dict
         storeDictionary(param_dict)
         response = getReponse(widget_name)
         print(response)
@@ -956,25 +1009,26 @@ class AddMulSer(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Add Multiple Services'
-        param_dict = {}
+        self.dict = {}
         msgLabel = Label(root, text='Key in the following details.')
         msgLabel.grid(column=2, columnspan=2)
-        saveButton = Button(root, text='Add', command=lambda: self.sendApi(param_dict))
+        saveButton = Button(root, text='Add', command=lambda: self.sendApi())
         saveButton.grid(row=6, column=3, sticky='W')
         cancelButton = Button(root, text='Cancel', command=lambda: self.root.destroy())
         cancelButton.grid(row=6, column=3, sticky='E')
         if 'householdId' in dictionary.keys():
-            col = CreateColumn(root, 'Household ID', 2, name='householdId', fixed_text=dictionary['householdId'])
-            param_dict[col.name] = col
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId', fixed_text=dictionary['householdId'])
+            self.dict[col.name] = col
         else:
-            col = CreateColumn(root, 'Household ID', 2, name='householdId')
-            param_dict[col.name] = col
-        param_dict['offerKey'] = CreateColumn(root, 'Offer Key(s)', 4, optionList=offerkey_optionlist, name='offerKey',
+            col = CreateColumn(root, 'Household ID', 2, 2, name='householdId')
+            self.dict[col.name] = col
+        self.dict['offerKey'] = CreateColumn(root, 'Offer Key(s)', 4, 2, optionList=offerkey_optionlist, name='offerKey',
                            widget_type='entry_list')
-        param_dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 3, name='authorizationType',
+        self.dict['authorizationType'] = CreateColumn(root, 'Authorization Type', 3, 2, name='authorizationType',
                                                        fixed_text='SUBSCRIPTION')
 
-    def sendApi(self, param_dict):
+    def sendApi(self):
+        param_dict = self.dict
         widget_name = self.name
         storeDictionary(param_dict)
         response = getReponse(widget_name)
@@ -986,39 +1040,34 @@ class AddMulSer(Frame):
 
 class Device(Frame):
     # create menu page with all the button.
-    def __init__(self, root):
-        Frame.__init__(self, root)
-        self.name = 'Device'
+    def __init__(self, root, controller):
         self.root = root
-        self.update()
-        self.update_idletasks()
-        logInCredentials = CreateColumn(self, 'Household ID', 2)
-        logBtn = Button(self, text='Log in', command=lambda: self.logInUser(logInCredentials.entry.get()))
-        logBtn.grid(row=2, column=4, sticky='W')
-        Label(self, text='Account info').grid(column=2, columnspan=3)
-        param_names = ['deviceId', 'accountId', 'smartCardId', 'subscriberId', 'bssFullType']
-        for item in param_names:
-            if dictionary[item]:
-                param_dict = {p: CreateColumn(self, p, i + 4, name=p) for i, p in
-                            enumerate(param_names)}
+        Frame.__init__(self, self.root)
+        self.name = 'Device & Subscriptions'
+        # create buttons for different sections
+        # btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs',
+        #                  command=lambda: controller.show_frame('AccountInfo'))
+        # btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
+        # btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev',
+        #                 command=lambda: controller.show_frame('Device'))
+        # btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
+        # btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
+        # btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
 
-            else:
-                param_dict = {p: CreateColumn(self, p, i + 4, name=p) for i, p in
-                            enumerate(param_names)}
-        createBtn = Button(self, text='Add More device', command=lambda: self.pop_up(CreateSubs))
-        createBtn.grid(row=17, column=3, sticky='W')
+        # device info page
+        self.dict = {}
 
-    def logInUser(self, param):
-        widget_name = 'Log in'
-        storeDictionary(param)
-        getReponse(AccountInfo, widget_name)
-        self.update()
-        self.update_idletasks()
+        refreshBtn= Button(self, text='Update', command=lambda: controller.refresh())
+        refreshBtn.grid(row=17, column=3, sticky='W')
 
-    def pop_up(self, frame):
-        self.newWindow = Toplevel()
-        self.newWindow.wm_title('Create New Subscriber')
-        frame(self.newWindow)
+    def logInUser(self, controller):
+        param_dict = self.dict
+        storeDictionary(param_dict)
+        parseHouseholdDetails()
+        controller.refresh()
+
+
+
 
 
 boa = Boa()
