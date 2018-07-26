@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
 import tkinter.messagebox as msgBox
 import requests
 import json
@@ -31,7 +32,6 @@ device_list = {'Device ID': 'deviceId', 'Device Type': 'deviceType', 'bssFullTyp
                'Create Date': 'createDate', 'Last Update Date': 'lastUpdateDate', 'Subscriber ID': 'subscriberId',
                'SmartCard ID': 'smartCardId'}
 
-
 def storeDictionary(param_dict):
     # store data keyed in by the user into a general dictionary
     for k, v in param_dict.items():
@@ -41,7 +41,6 @@ def storeDictionary(param_dict):
             temp_file.update({k: v})
         else:
             temp_file.update({k: v.get_value()})
-    print('temp file', temp_file)
 
 
 def getParam(apinfo):
@@ -138,16 +137,16 @@ def parseHouseholdDetails():
                     for forth in second[third]:
                         tm_dict.update({forth.tag: forth.text})
                     subscription_list.append(tm_dict)
-                    t_dict[second[third].tag] = subscription_list
-                    if t_dict not in list_of_dictionary:
-                        list_of_dictionary.append(t_dict)
-                    dictionary.update({first.tag: list_of_dictionary})
+                    t_dict.update({second[third].tag: subscription_list})
+                list_of_dictionary.insert(0, t_dict)
+                dictionary.update({first.tag: list_of_dictionary})
             else:
                 temporary_dict.update({second.tag: second.text})
                 dictionary.update({first.tag: temporary_dict})
                 for third in second:
                     tempo_dict.update({third.tag: third.text})
                     dictionary.update({first.tag: {second.tag: tempo_dict}})
+    print('final',dictionary)
     return dictionary
 
 # Create text box to avoid repetitive codes.
@@ -186,10 +185,10 @@ class CreateColumn(Frame):
                 scrollbar_godown.config(command=self.entry.yview)
             else:
                 self.entry = Entry(root, textvariable=char_text)
-                self.entry.grid(row=r, column=3, sticky='W')
+                self.entry.grid(row=r, column=c+1, sticky='W')
         else:
             self.entry = Label(root, text=fixed_text, width=20)
-            self.entry.grid(row=r, column=3, sticky='W')
+            self.entry.grid(row=r, column=c+1, sticky='W')
 
     def get_value(self):
         # to get the value of the entry / label so that it can be passed into dictionary
@@ -291,19 +290,13 @@ class AccountInfo(Frame):
         self.root = root
         Frame.__init__(self, self.root)
         self.name = 'Account Info'
-        # create buttons for different sections
-        # btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs',
-        #                  command=lambda: controller.show_frame('AccountInfo'))
-        # btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
-        # btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev',
-        #                 command=lambda: controller.show_frame('Device'))
-        # btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
-        # btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
-        # btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
-
         # account info page
         self.dict = {}
-        Label(self, text='Account info').grid(row=2, column=2, columnspan=3)
+        label = Label(self, text='Account info', font='bold')
+        label.grid(row=2, column=2, columnspan=3)
+        f = font.Font(label, label.cget("font"))
+        f.configure(underline=True)
+        label.configure(font=f)
         if 'householdId' in dictionary.keys():
             logInCredentials = CreateColumn(self, 'Household ID', 1, 2, name='householdId',
                                             fixed_text=dictionary['householdId'])
@@ -311,9 +304,8 @@ class AccountInfo(Frame):
             self.dict.update({p: CreateColumn(self, p, i + 2, 2, name=param_names[p], fixed_text='') for i, p in
                                enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
                                and p != 'Offer Key'})
-            controller.refresh()
         else:
-            logInCredentials = CreateColumn(self, 'Household ID', 1, 2, name='householdId', fixed_text='')
+            logInCredentials = CreateColumn(self, 'Household ID', 1, 2, name='householdId')
             self.dict['householdId'] = logInCredentials
             self.dict.update({p: CreateColumn(self, p, i + 2, 2, name=param_names[p], fixed_text='') for i, p in
                                enumerate(param_names) if p != 'Household ID' and p != 'Authorization Type'
@@ -324,22 +316,64 @@ class AccountInfo(Frame):
         # refreshBtn.grid(row=17, column=3, sticky='W')
 
         # device page
-        Label(self, text='Device & Subscription Information').grid(row=2, column=5, columnspan=3)
-        Label(self, text='Device').grid(row=3, column=5, columnspan=3)
-        # combobox to select device option
-        
-        # for i, p in enumerate(device_list.keys()):
-        #     col = CreateColumn(self, p, i + 4, 5,  name=device_list[p], fixed_text='')
-        #     self.dict[col.name] = col
-        # Label(self, text='Device').grid(column=5, columnspan=3)
-        # if 'authorizations' in dictionary.keys():
-        #     for i, p in enumerate(device_list.keys()):
-        #         col = CreateColumn(self, p, i + 12, 5, name=device_list[p], fixed_text=dictionary['devices']['device'][device_list[p]])
-        #         self.dict[col.name] = col
-        # else:
-        #     for i, p in enumerate(device_list.keys()):
-        #         col = CreateColumn(self, p, i + 12, 5,  name=device_list[p], fixed_text='')
-        #         self.dict[col.name] = col
+        # device
+        label= Label(self, text='Device & Subscriptions', font='bold')
+        label.grid(row=2, column=5, columnspan=5)
+        f = font.Font(label, label.cget("font"))
+        f.configure(underline=True)
+        label.configure(font=f)
+        Label(self, text='Device').grid(row=3, column=5, columnspan=2)
+        for i, p in enumerate(device_list.keys()):
+            col = CreateColumn(self, p, i + 4, 5,  name=device_list[p], fixed_text='')
+            self.dict[col.name] = col
+
+        #subscription page
+        Label(self, text='Subscriptions').grid(row=3, column=7, columnspan=3)
+        Label(self, text='Authorization ID').grid(row=4, column=7)
+        Label(self, text='Offer Key').grid(row=4, column=8)
+        Label(self, text='Authorization Type').grid(row=4, column=9)
+
+        #settings page
+        label = Label(self, text='Settings', font='bold')
+        label.grid(row=2, column=10, columnspan=3)
+        f = font.Font(label, label.cget("font"))
+        f.configure(underline=True)
+        label.configure(font=f)
+        Label(self, text='Port Connected').grid(row=3, column=10)
+        self.url = Label(self, text='http://172.17.65.206:9001')
+        self.url.grid(row=3, column=11)
+        self.dict['URL'] = 'http://172.17.65.206:9001'
+        changeBtn = Button(self, text='Change', command=lambda: self.changeURL())
+        changeBtn.grid(row=3, column=12, sticky='E')
+
+    def changeURL(self):
+        self.tempLabel = Label(self, text='Key in URL details')
+        self.tempLabel.grid(row=5, column=10, columnspan=2)
+        self.tempEntry = Entry(self)
+        self.tempEntry.grid(row=6, column=10, columnspan=2)
+        self.changeBtn = Button(self, text='Change', command=lambda: self.insertURL())
+        self.changeBtn.grid(row=6, column=11, sticky='E')
+        self.cancelBtn = Button(self, text='Cancel', command=lambda: self.delete())
+        self.cancelBtn.grid(row=7, column=11, sticky='E')
+
+    def insertURL(self):
+        #change URL in dictionary
+        self.dict['new url'] = self.tempEntry.get()
+        #change text in page
+        self.url.config(text=self.tempEntry.get())
+        #destroy current box
+        self.tempLabel.destroy()
+        self.tempEntry.destroy()
+        self.changeBtn.destroy()
+        self.cancelBtn.destroy()
+        #change the one the config file
+
+
+    def delete(self):
+        self.tempLabel.destroy()
+        self.tempEntry.destroy()
+        self.changeBtn.destroy()
+        self.cancelBtn.destroy()
 
     def logInUser(self):
         param_dict = self.dict
@@ -348,10 +382,21 @@ class AccountInfo(Frame):
         self.refresh()
 
     def refresh(self):
+        # for subscriptions page
+        subscript = dictionary['authorizations'][0]['subscription']
+        for r, item in enumerate(subscript):
+            Label(self, text=item['authorizationId']).grid(row=r+6, column=7)
+            Label(self, text=item['offerKey']).grid(row=r+6, column=8)
+            Label(self, text=item['authorizationType']).grid(row=r+6, column=9)
+
+        #refresh the page
         objectList = self.root.winfo_children()[1].winfo_children()
         for item in range(0, len(objectList)):
-            param = ''
+            if objectList[item].widgetName == 'button' and objectList[item]['text'] == 'Log in':
+                objectList[item].destroy()
+
             if objectList[item].widgetName == 'label':
+                param = ''
                 text = objectList[item].cget('text')
                 if text in param_names.keys():
                     param = param_names[text]
@@ -359,7 +404,11 @@ class AccountInfo(Frame):
                     param = device_list[text]
                 if param != '':
                     if param in dictionary.keys():
-                        objectList[item + 1].config(text=dictionary[param])
+                        if param == 'householdId':
+                            objectList[item+1].destroy()
+                            Label(self, text=dictionary[param]).grid(row=1, column=3)
+                        else:
+                            objectList[item + 1].config(text=dictionary[param])
                     else:
                         selected_branch = dictionary['devices']['device']
                         if param in selected_branch.keys():
@@ -1038,12 +1087,33 @@ class AddMulSer(Frame):
 # make frame for device.
 
 
-class Device(Frame):
-    # create menu page with all the button.
-    def __init__(self, root, controller):
-        self.root = root
-        Frame.__init__(self, self.root)
-        self.name = 'Device & Subscriptions'
+# class Device(Frame):
+#     # create menu page with all the button.
+#     def __init__(self, root, controller):
+#         self.root = root
+#         Frame.__init__(self, self.root)
+#         self.name = 'Device & Subscriptions'
+#         # create buttons for different sections
+#         # btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs',
+#         #                  command=lambda: controller.show_frame('AccountInfo'))
+#         # btnSubs.grid(row=1, column=1, sticky='SNEW', rowspan=5)
+#         # btnDev = Button(self, text='Device(s) & Subscriptions', state=NORMAL, name='btnDev',
+#         #                 command=lambda: controller.show_frame('Device'))
+#         # btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
+#         # btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
+#         # btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
+#
+#         # device info page
+#         self.dict = {}
+#
+#         refreshBtn= Button(self, text='Update', command=lambda: controller.refresh())
+#         refreshBtn.grid(row=17, column=3, sticky='W')
+#
+#     def logInUser(self, controller):
+#         param_dict = self.dict
+#         storeDictionary(param_dict)
+#         parseHouseholdDetails()
+
         # create buttons for different sections
         # btnSubs = Button(self, text='Subscriber Details', state=NORMAL, name='btnSubs',
         #                  command=lambda: controller.show_frame('AccountInfo'))
@@ -1053,21 +1123,6 @@ class Device(Frame):
         # btnDev.grid(row=6, column=1, sticky='SNEW', rowspan=6)
         # btnSett = Button(self, text='Info & Settings', state=NORMAL, name='btnSett')
         # btnSett.grid(row=12, column=1, sticky='SNEW', rowspan=6)
-
-        # device info page
-        self.dict = {}
-
-        refreshBtn= Button(self, text='Update', command=lambda: controller.refresh())
-        refreshBtn.grid(row=17, column=3, sticky='W')
-
-    def logInUser(self, controller):
-        param_dict = self.dict
-        storeDictionary(param_dict)
-        parseHouseholdDetails()
-        controller.refresh()
-
-
-
 
 
 boa = Boa()
