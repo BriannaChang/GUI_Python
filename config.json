@@ -1,107 +1,107 @@
 {
-	"Add Device": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateDevice xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><device><bssFullType>{bssFullType}</bssFullType><deviceId>{deviceId}</deviceId><smartCardId>{smartCardId}</smartCardId><subscriberId>{subscriberId}</subscriberId></device></boa:CreateDevice>"
-	},
-	"Add Single Service": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription/{offerKey}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateHouseholdSubscription xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscription><authorizationType>SUBSCRIPTION</authorizationType></subscription></boa:CreateHouseholdSubscription>"
-	},
-	"Add Enabler Service": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/enabledServices/{enablerServices}",
-		"Body": ""
-	},
-	"Add Multiple Services": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscriptions",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:HouseholdSubscriptions xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscriptions>{subscriptions}</subscriptions></boa:HouseholdSubscriptions>"
-	},
-	"Add OPPV": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/titles",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateTitleAuthorization xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><titleAuthorization><offerKey>{offerKey}</offerKey><expirationDate>{expirationDate}</expirationDate><authorizationType>{authorizationType}</authorizationType></titleAuthorization></boa:CreateTitleAuthorization>"
-	},
-	"Change Bouquet ID": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/locale/bouquetId/{bouquetId}",
-		"Body": ""
-	},
-	"Change Region Key": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/locale/zipCode/{zipCode}",
-		"Body": ""
-	},
-	"Change Ownership": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><accountId>{accountId}</accountId><community>Malaysia Live</community><authorizations><subscriptions>{subscriptions}</subscriptions></authorizations><locale><populationId>1</populationId><bouquetId>{bouquetId}</bouquetId><zipCode>{zipCode}</zipCode></locale><preferences><currency>0458</currency></preferences></household></boa:UpdateHousehold>"
-	},
-	"Create New Subscriber": {
-		"Method": "POST",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><householdStatus>ACTIVATED</householdStatus><accountId>{accountId} </accountId><community>Malaysia Live</community><devices><device><bssFullType>{bssFullType}</bssFullType><deviceId>{deviceId}</deviceId><smartCardId>{smartCardId}</smartCardId><subscriberId>{subscriberId}</subscriberId></device></devices><authorizations><subscriptions>{subscriptions}</subscriptions></authorizations><locale><populationId>1</populationId><bouquetId>{bouquetId}</bouquetId><zipCode>{zipCode}</zipCode></locale><preferences><currency>0458</currency></preferences></household></boa:CreateHousehold>"
-	},
-	"Delete Enabler Service": {
-		"Method": "DELETE",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/enabledServices/{enablerServices}",
-		"Body": ""
-	},
-	"Delete Single Service": {
-		"Method": "DELETE",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription/{offerKey}",
-		"Body": ""
-	},
-	"Delete Device": {
-		"Method": "DELETE",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
-		"Body": ""
-	},
-	"Delete Subscriber": {
-		"Method": "DELETE",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
-		"Body": ""
-	},
-	"Household": {
-		"Method": "GET",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
-		"Body": ""
-	},
-	"Modify Services": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:HouseholdSubscriptions xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscriptions>{subscriptions}</boa:HouseholdSubscriptions>"
-	},
-	"Reset Pin": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/preferences/parentalRatingPin",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateParentalRatingPin xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><parentalRatingPin>0000</parentalRatingPin></boa:UpdateParentalRatingPin>"
-	},
-	"Replace Card": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateDevice xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><device><smartCardId>{smartCardId}</smartCardId></device></boa:UpdateDevice>"
-	},
-	"Refresh card/Repair Box": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/refresh",
-		"Body": ""
-	},
-	"Remove OPPV - Get": {
-		"Method": "GET",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/titles",
-		"Body": ""
-	},
-	"Remove OPPV - Delete": {
-		"Method": "DELETE",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/title/{purchaseId}",
-		"Body": ""
-	},
-	"Suspend/Restore Subscriber": {
-		"Method": "PUT",
-		"URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
-		"Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><householdStatus>{householdStatus}</householdStatus></household></boa:UpdateHousehold>"
-	}
+    "Add Device": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateDevice xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><device><bssFullType>{bssFullType}</bssFullType><deviceId>{deviceId}</deviceId><smartCardId>{smartCardId}</smartCardId><subscriberId>{subscriberId}</subscriberId></device></boa:CreateDevice>"
+    },
+    "Add Single Service": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription/{offerKey}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateHouseholdSubscription xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscription><authorizationType>SUBSCRIPTION</authorizationType></subscription></boa:CreateHouseholdSubscription>"
+    },
+    "Add Enabler Service": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/enabledServices/{enablerServices}",
+        "Body": ""
+    },
+    "Add Multiple Services": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscriptions",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:HouseholdSubscriptions xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscriptions>{subscriptions}</subscriptions></boa:HouseholdSubscriptions>"
+    },
+    "Add OPPV": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/titles",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateTitleAuthorization xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><titleAuthorization><offerKey>{offerKey}</offerKey><expirationDate>{expirationDate}</expirationDate><authorizationType>{authorizationType}</authorizationType></titleAuthorization></boa:CreateTitleAuthorization>"
+    },
+    "Change Bouquet ID": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/locale/bouquetId/{bouquetId}",
+        "Body": ""
+    },
+    "Change Region Key": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/locale/zipCode/{zipCode}",
+        "Body": ""
+    },
+    "Change Ownership": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><accountId>{accountId}</accountId><community>Malaysia Live</community><authorizations><subscriptions>{subscriptions}</subscriptions></authorizations><locale><populationId>1</populationId><bouquetId>{bouquetId}</bouquetId><zipCode>{zipCode}</zipCode></locale><preferences><currency>0458</currency></preferences></household></boa:UpdateHousehold>"
+    },
+    "Create New Subscriber": {
+        "Method": "POST",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:CreateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><householdStatus>ACTIVATED</householdStatus><accountId>{accountId} </accountId><community>Malaysia Live</community><devices><device><bssFullType>{bssFullType}</bssFullType><deviceId>{deviceId}</deviceId><smartCardId>{smartCardId}</smartCardId><subscriberId>{subscriberId}</subscriberId></device></devices><authorizations><subscriptions>{subscriptions}</subscriptions></authorizations><locale><populationId>1</populationId><bouquetId>{bouquetId}</bouquetId><zipCode>{zipCode}</zipCode></locale><preferences><currency>0458</currency></preferences></household></boa:CreateHousehold>"
+    },
+    "Delete Enabler Service": {
+        "Method": "DELETE",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/enabledServices/{enablerServices}",
+        "Body": ""
+    },
+    "Delete Single Service": {
+        "Method": "DELETE",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription/{offerKey}",
+        "Body": ""
+    },
+    "Delete Device": {
+        "Method": "DELETE",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
+        "Body": ""
+    },
+    "Delete Subscriber": {
+        "Method": "DELETE",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
+        "Body": ""
+    },
+    "Household": {
+        "Method": "GET",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
+        "Body": ""
+    },
+    "Modify Services": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/subscription",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:HouseholdSubscriptions xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><subscriptions>{subscriptions}</boa:HouseholdSubscriptions>"
+    },
+    "Reset Pin": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/preferences/parentalRatingPin",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateParentalRatingPin xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><parentalRatingPin>0000</parentalRatingPin></boa:UpdateParentalRatingPin>"
+    },
+    "Replace Card": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/device/{deviceId}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateDevice xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><device><smartCardId>{smartCardId}</smartCardId></device></boa:UpdateDevice>"
+    },
+    "Refresh card/Repair Box": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/refresh",
+        "Body": ""
+    },
+    "Remove OPPV - Get": {
+        "Method": "GET",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/titles",
+        "Body": ""
+    },
+    "Remove OPPV - Delete": {
+        "Method": "DELETE",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}/authorization/title/{purchaseId}",
+        "Body": ""
+    },
+    "Suspend/Restore Subscriber": {
+        "Method": "PUT",
+        "URL": "http://172.17.65.206:9001/BillingAdaptor/api/v2/household/{householdId}",
+        "Body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><boa:UpdateHousehold xmlns:boa=\"http://protocols.cisco.com/spvtg/boa/commonapi/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><household><householdStatus>{householdStatus}</householdStatus></household></boa:UpdateHousehold>"
+    }
 }
