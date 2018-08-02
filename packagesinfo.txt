@@ -1,490 +1,490 @@
-[1]   Brunei PPV Sports BO
-[2]   Brunei PPV Sports BO 2
-[3]   Brunei PPV Sports BO 3
-[4]   Brunei PPV Sports BO 4
-[5]   Brunei PPV Sports BO 5
-[6]   Brunei PPV Sports BO 6
-[7]   Brunei PPV Sports BO 7
-[8]   Brunei PPV Sports BO 8
-[9]   Brunei PPV Sports BO 9
-[10]  Brunei Movies (Ruby Package)
-[11]  Brunei World (Sapphire Package)
-[12]  Brunei Reserved 1
-[13]  Brunei MCR
-[14]  Brunei Mustika
-[15]  Brunei Maharaja
-[16]  Brunei PPV Movies BO 1
-[17]  Brunei PPV Movies BO 2
-[18]  Brunei ABO Thangathirai
-[19]  Brunei ABO Tayangan Hebat
-[20]  Brunei Astro Fav
-[21]  Brunei Movies HD (Ruby HD Package)
-[22]  Brunei World HD (Sapphire HD Package)
-[23]  Brunei Learning HD
-[24]  Brunei Variety HD
-[25]  Reserved 1
-[26]  Radio Services
-[29]  Chinese Family Package
-[30]  Family Special Package
-[31]  Family Special HD Package
-[33]  Malaysia MCR
-[35]  Sports 360
-[39]  Reserved 2
-[42]  Baby TV
-[43]  Reserved 3
-[44]  Shuang Xing
-[45]  School Package
-[46]  Maharaja Package
-[47]  Celestial Movies
-[48]  Gold Package
-[49]  Indo Pek
-[50]  Astro Stocklink
-[51]  Metro Package
-[52]  Reserved 5
-[53]  Family Package
-[54]  Sports Lite Package
-[55]  Sports Lite HD
-[56]  Dynasty Package
-[57]  Movies Package
-[58]  Kids Package
-[59]  Learning Package
-[60]  News Package
-[61]  Variety Package
-[62]  Sports Package
-[63]  New Emperor Package
-[64]  Mustika Package
-[65]  Movies HD
-[66]  Sports HD
-[67]  Learning HD
-[68]  Variety HD
-[69]  Dynasty HD
-[70]  Project Gemilang Package
-[71]  Family HD/Family Extra
-[72]  HD Selection
-[73]  Mustika HD
-[74]  Maharaja HD
-[75]  New Emperor HD
-[76]  Gold HD
-[77]  Metro HD
-[78]  Kids HD
-[79]  News HD
-[80]  HBO HD ALC for Regular Customer 
-[81]  Fox Sports HD ALC for Regular Customer
-[82]  ASSP HD ALC for Regular Customer
-[83]  NAT GEO HD ALC for Regular Customer
-[84]  HISTORY HD ALC for Regular Customer
-[85]  Chinese Family HD
-[86]  PD Pack
-[87]  Jade Pack
-[89]  PAT (Go Shop & Go Shop 2)
-[90]  Maxis Select
-[91]  Maxis Select Movies
-[92]  A-List HD
-[93]  Sports Premium (Setanta, Golf, Cricket)
-[94]  Korean Pack
-[95]  Boo
-[98]  CFP 98 (Free Preview)
-[99]  HD Preview
-[100] SD Preview (CFP)
-[101] HDMI Enabler
-[102] Security Update 1
-[103] DMG/B.yond PVR Recording Enabler
-[104] Pairing Override Enabler
-[105] B.yond Recording Enabler
-[107] IPPV Enabler
-[108] PDL Enabler (PDL Enabler Service) 
-[109] Hybrid Enabler (IPTV Marker 2)
-[110] B.yond/B.yond PVR IP Enabler (IPTV Marker 1)
-[112] Maxis IPTV Enabler (IPTV Marker 3)
-[160] Astro-X Opt In (temp for IVP)
-[161] Engineering Test (EGT)
-[162] EXPay and EZMEG (EXPM)
-[163] Special-01 (SPEC-1) /Iqraa
-[166] Special-02 (SPEC-2)
-[167] Government Free Satellite
-[168] Jaguh / Freesat Pack
-[169] PDL Sub
-[170] PDL Sub 1 (Usage for VOD Passes L2)
-[190] SVOD Karaoke
-[191] SVOD Animax
-[192] SVOD Asian Entertainment (AOTG Pack)
-[193] SVOD Movies
-[194] SVOD Catch-up TV (AOTG Pack)
-[195] SVOD Reward On Demand TV
-[196] SVOD Entertainment
-[197] SVOD Education
-[198] SVOD Kids
-[199] SVOD Variety
-[200] SVOD Box Office
-[201] SVOD Events
-[202] Subscription OD
-[209] SVOD Astro Select
-[210] Astro First Loyalist
-[220] AOD HD
-[221] ABO Tayangan Hebat
-[222] ABO Thangathirai
-[223] AOD Freeview 4
-[224] AOD Freeview 3
-[225] AOD Freeview 2
-[226] AOD Freeview 1
-[227] AOD Loyalist
-[228] ABO Loyalist 1
-[229] ABO Loyalist 2
-[230] Malaysia Astro Fav
-[231] Malaysia Fav (FTA)
-[232] Malaysian Common Reserved 1
-[233] Malaysian Common Reserved 2
-[234] Malaysian Common Reserved 3
-[235] Malaysian Common Reserved 4
-[236] *Related to CA ID 10 / 11 / 231 / 293 (Malaysia/Brunei Fav - Terrestrial Channels)
-[237] *Related to CA ID 13 / 33 (C_MCR)
-[240] *Related to CA ID 102 / 765 (Security Update 1)
-[250] *Related to CA ID 104 / 767 (Pairing Override)
-[254] *Related to CA ID 107 / 761 (IPPV Enabler)
-[255] *Related to CA ID 103 / 105 / 763 / 764 (Recording)
-[256] Malaysia ALC Arab TV
-[257] Malaysia ALC CNBC Asia
-[258] Malaysia ALC CNN
-[259] Malaysia ALC Fox Sports
-[260] Malaysia ALC Fox Sports 2
-[261] Malaysia ALC Nat Geo
-[262] Malaysia ALC Diva Channel
-[263] Malaysia ALC Max
-[264] Malaysia ALC Fox Movies Premium
-[265] Malaysia ALC Star World
-[266] Malaysia ALC Fox
-[267] Malaysia ALC MTV ASIA
-[268] Malaysia ALC Discovery
-[269] Malaysia ALC Disney    
-[270] Malaysia ALC Cartoon Network
-[271] Malaysia ALC Wah Lai Toi 
-[272] Malaysia ALC Astro Ria      
-[273] Malaysia ALC Vaanavil        
-[274] Malaysia ALC Asian Ent. Channel
-[275] Malaysia ALC HBO          
-[276] Malaysia ALC ASSP/ASSP3/ASSP4
-[277] Malaysia ALC Bloomberg    
-[278] Malaysia ALC NHK World      
-[279] Malaysia ALC Xing He
-[280] Malaysia ALC Lifetime
-[281] Malaysia Radio Services
-[282] Malaysia ALC Discovery Travel & Living
-[283] Malaysia ALC AXN
-[284] Malaysia ALC Animal Planet
-[285] Malaysia ALC Tutor TV UPSR
-[286] Malaysia ALC Baby TV
-[287] Malaysia ALC BBC
-[288] Malaysia ALC Ria HD
-[289] Malaysia ALC ZooMoo
-[290] Malaysia ALC tvN
-[291] Malaysia ALC HGTV
-[292] Malaysia ALC News
-[293] Malaysia Terestial Channel
-[295] Malaysia ALC TVBS Asia
-[296] Malaysia ALC Pheonix
-[299] Malaysia ALC Shuang Xing
-[302] Malaysia ALC Celestial Movies
-[305] Malaysia ALC Astro Stocklink
-[335] Malaysia ALC HBO HD
-[336] Malaysia ALC Fox Sports HD
-[337] Malaysia ALC ASSP HD
-[338] Malaysia ALC Nat Geo HD
-[339] Malaysia ALC History HD
-[355] Malaysia ALC TVIQ
-[356] Malaysia ALC Astro Prima
-[357] Malaysia ALC CHAT@15
-[358] Malaysia ALC HITZ.TV (unused)
-[359] Malaysia ALC CTVN
-[360] Malaysia ALC Disney Junior
-[361] Malaysia ALC Astro Oasis
-[362] Malaysia ALC Pheonix InfoNews
-[363] Malaysia ALC SunTV
-[373] Malaysia ALC Aruna (unused)
-[374] Malaysia ALC WATV
-[375] Malaysia ALC CTV4
-[376] Malaysia ALC Kirana (unused)
-[377] Malaysia ALC Ceria
-[378] Malaysia ALC Animax
-[379] Malaysia ALC Zee TV
-[380] Malaysia ALC BBC Entertainment (unused) 
-[381] Malaysia ALC Al-Jazeera English      
-[382] Malaysia ALC CTI
-[383] Malaysia ALC Eve
-[384] Malaysia ALC DMAX
-[385] Malaysia ALC E! Entertainment
-[386] Malaysia ALC Kai Lai Toi
-[387] Malaysia ALC Eurosports
-[388] Malaysia ALC Sun Music
-[389] Malaysia ALC Vellithirai
-[390] Malaysia ALC Discovery Science
-[391] Malaysia ALC Golf Channel
-[392] Malaysia ALC Crime Investigation
-[393] Malaysia ALC History
-[394] Malaysia ALC Citra
-[395] Malaysia ALC Food Channel
-[396] Malaysia ALC Astro Hua Hee Dai
-[397] Malaysia ALC Xiao Tai Yang
-[398] Malaysia ALC KBS World
-[400] Malaysia ALC TVB Entertainment News
-[401] Malaysia ALC Nickelodeon
-[402] Malaysia ALC Bernama
-[403] Malaysia ALC Awani
-[404] Malaysia ALC Special Sports 2
-[405] Malaysia ALC Special Sports (Euro/Olympic Pass)
-[406] Malaysia ALC Australia Network
-[407] Unused (ASSP3)
-[408] Malaysia ALC Warna HD
-[409] Malaysia ALC Warna
-[410] Malaysia ALC Tutor TV PT3
-[411] Malaysia ALC Tutor TV SPM
-[412] Malaysia ALC ASSP4
-[413] Tara HD
-[414] CE Prepaid Common
-[415] CE Prepaid Channels [OAS,TVAH,TVi,VAAN,AEC]
-[416] CE Common
-[417] Astro Go Shop Bundle (Chnl 118, 120, 303)
-[425] Malaysia ALC Bella
-[426] Malaysia ALC ASSP2
-[427] Malaysia ALC Bio
-[428] Malaysia ALC AXN HD
-[429] Malaysia ALC Wah Lai Toi HD
-[430] Malaysia ALC ASSP3
-[431] Malaysia ALC Makkal TV
-[432] Malaysia ALC Chutti TV
-[433] Malaysia ALC TVB Classic
-[434] Malaysia ALC Nat Geo Wild
-[435] Malaysia ALC ITV Choice
-[436] Malaysia ALC Arena
-[437] Malaysia ALC Fox Sports 3
-[438] Malaysia ALC Sports Package 2
-[439] Malaysia ALC ASSP2 HD
-[440] Malaysia ALC Fox Movies Premium HD
-[441] Malaysia ALC Celestial HD
-[442] BabyTV HD
-[443] Indo Pek HD
-[444] ABO Tayangan Hebat HD
-[445] ABO Thangathirai HD
-[446] Chakravarthy Package
-[447] Chakravarthy HD
-[448] Malaysia ALC Sky News HD
-[449] Malaysia ALC Disney XD
-[450] Malaysia ALC Disney XD HD
-[451] Malaysia ALC Food Network HD
-[452] Malaysia ALC Life Inspired HD
-[453] Malaysia ALC ASSP3 HD
-[454] Malaysia ALC Adithya
-[455] Malaysia ALC Jaya TV
-[456] Malaysia ALC Raj TV
-[457] Malaysia ALC Kalaignar TV
-[458] Malaysia ALC Star Vijay
-[459] Malaysia ALC Bintang
-[460] Malaysia ALC Pelangi
-[461] BollyOne HD
-[462] Malaysia ALC ASSP4 HD
-[463] Malaysia ALC Arena HD
-[464] Malaysia ALC KBS World HD
-[465] Malaysia ALC Mustika HD
-[466] Malaysia ALC Vinmeen HD
-[467] Malaysia ALC Hua Hee Dai HD
-[468] Malaysia ALC Discovery World HD
-[469] Malaysia ALC Star World HD
-[470] Malaysia ALC Maya HD
-[471] Malaysia ALC Quan Jia HD
-[472] Malaysia ALC FX HD
-[473] Malaysia ALC Sundance HD
-[474] Malaysia ALC WWE SD
-[475] Malaysia ALC Setanta Rugby
-[476] Malaysia ALC Cricket
-[477] Malaysia ALC Golf
-[478] Malaysia ALC WWE HD
-[479] Family Lite
-[480] Malaysia ALC Star Chinese Channel
-[481] Malaysia ALC Fox Family HD
-[482] Malaysia ALC Fox Action HD
-[483] Malaysia ALC Hits HD
-[484] Malaysia ALC FYI HD
-[485] Malaysia ALC Diva HD
-[486] Malaysia ALC Fox HD
-[487] Malaysia ALC One HD
-[488] Malaysia ALC Kix HD
-[489] Malaysia ALC AEC HD
-[490] Malaysia ALC Shuang Xing HD
-[491] Malaysia ALC TVN
-[492] Malaysia ALC Oh!K HD
-[493] Malaysia ALC eGG
-[494] Malaysia ALC beIN
-[495] Malaysia ALC WARNER TV
-[512] Brunei ALC CNBC Asia
-[513] Brunei ALC CNN
-[514] Brunei ALC Fox Sports
-[515] Brunei ALC Star Sports
-[516] Brunei ALC Nat. Geo.
-[517] Brunei ALC Diva Universal
-[518] Brunei ALC Max
-[519] Brunei ALC Fox Movies Premium
-[520] Brunei ALC Star World
-[521] Brunei ALC Channel [V]
-[522] Brunei ALC MTV Asia
-[523] Brunei ALC Discovery
-[524] Brunei ALC Disney
-[525] Brunei ALC Cartoon Network
-[526] Brunei ALC Wah Lai Toi
-[527] Brunei ALC Astro Ria
-[528] Brunei ALC Vannavil
-[529] Brunei ALC Asian Entertainment
-[530] Brunei ALC HBO Asia
-[531] Brunei ALC ASSP
-[532] Brunei ALC Bloomberg
-[533] Brunei ALC WWE SD
-[534] Brunei ALC WWE HD
-[535] Brunei ALC eGG
-[536] Brunei ALC BeIn
-[538] Brunei ALC AXN
-[542] Brunei ALC BBC
-[550] Brunei ALC TVB Asia
-[551] Brunei ALC Pheonix
-[554] Brunei ALC Shuang Xing
-[557] Brunei ALC Celestial Movies
-[611] Brunei ALC Astro Prima
-[619] Brunei ALC Live 8 channel
-[638] Brunei ALC Eve
-[639] Brunei ALC Discovery Realtime
-[640] Brunei ALC Entertainment
-[641] Brunei ALC Kai Lai Toi
-[642] Brunei ALC Euro Sport
-[643] Brunei ALC Sun Music
-[644] Brunei ALC Vellithirai
-[645] Brunei ALC Discover Science
-[646] Brunei ALC Golf Chanel
-[656] Brunie ALC Nickelodeon
-[657] Brunei ALC Bernama
-[658] Brunei ALC Awani
-[659] Brunei ALC Euro 2008
-[660] Brunei ALC Olympic Beijing 2008 
-[661] Brunei ALC Australian Network
-[670] Brunei Family HD
-[671] Brunei Sports Package 
-[672] Brunei ALC BollyOne HD
-[673] Brunei ALC Cricket HD
-[674] Brunei ALC Hits HD
-[750] Brunei AOD Loyalist
-[751] Brunei AOD Free View 1
-[752] Brunei AOD Free View 2
-[753] Brunei AOD Free View 3
-[754] Brunei AOD Free View 4
-[760] Hybrid Enabler
-[761] IPPV Enabler
-[762] PDL Enabler
-[763] B.yond Recording Enabler
-[764] DMG/B.yond PVR Recording Enabler
-[765] Security Update 1                       
-[766] HDMI Enabler
-[767] Pairing Override Enabler
-[4504]  NJOI - Prepaid Indo Pack [50504]
-[4512]  NJOI - Prepaid sports pack (Arena + Supersport 4) [50512]
-[4514]  NJOI - Chakravathy [50514]*
-[4524]  NJOI - Bella [50524]
-[4525]  NJOI - Citra [50525]
-[4526]  NJOI - Warna [50526]
-[4527]  NJOI - Ria [50527]
-[4528]  NJOI - Shuang Xing [50528]
-[4529]  NJOI - TVB Xing He [50529]
-[4530]  NJOI - Celestial Movies [50530]
-[4531]  NJOI - Hua Hee Dai [50531]
-[4532]  NJOI - Thangathirai [50532]
-[4533]  NJOI - Ceria [50533]
-[4534]  NJOI - KBS World [50534]
-[4535]  NJOI - Zee Variasi [50535]
-[4537]  Chnl200 - Euro/Olympic Pass [50537]
-[4538]  NJOI - Nat Geo Wild [50538]
-[4539]  NJOI - Animal Planet [50539]
-[4540]  NJOI - eGG [50540]
-[4541]  NJOI - Tara HD[50541]
-[4542]  NJOI - TVIQ [50542]
-[4543]  NJOI - Cartoon Network [50543]
-[4544]  NJOI - Disney [50544]
-[4545]  NJOI - Disney Junior [50545]
-[4546]  NJOI - Disney XD [50546]
-[4547]  NJOI - Nickelodeon [50547]
-[4548]  NJOI - ZOOMOO[50548]
-[4549]  NJOI - Quan Jia HD [54549]
-[4550]  NJOI - Vinmeen [54550]
-[4551]  NJOI - Jaya TV [54551]
-[4552]  NJOI - Raj TV [54552]
-[4553]  NJOI - Kalaignar TV [54553]
-[4554]  NJOI - Star VJ [54554]
-[4555]  NJOI - Vellithirai [54555]
-[5336]  Chnl200 - Mustika & Warna [45336]*
-[5337]  Chnl200 - Wah Lai Toi [45337]*
-[5338]  Chnl200 - Fox Sports & Fox Sports HD [45338]
-[5339]  Chnl200 - beIN Sports [45339]
-[5340]  Chnl200 - Jade Pack [45340]
-[5341]  Chnl200 - Boo [45341]
-[5342]  Chnl200 - Star Chinese [40060]
-[5343]  Chnl200 - Sports Lite [40059]
-[5344]  Chnl200 - Sports Focus [40058]
-[5345]  Chnl200 - Astro Cricket [40057]
-[5346]  Chnl200 - WWE Network [40056]
-[5347]  Chnl200 - Setanta Sports [40055]
-[5348]  Chnl200 - Golf Channel HD [40054]
-[5349]  Chnl200 - Oh!K HD [40053]
-[5350]  Chnl200 - BollyOne HD [40052]
-[5351]  Chnl200 - Wah Lai Toi [40051]
-[5352]  Chnl200 - Astro Super Sports 4 [40050]
-[5353]  Chnl200 - Astro Super Sports 3 [40049]
-[5354]  Chnl200 - Astro Super Sports 2 [40048]
-[5355]  Chnl200 - Astro Super Sports 1 [40047]
-[5356]  Chnl200 - A-List HD [40046]
-[5357]  Chnl200 - Chakravathy [40044]
-[5358]  Chnl200 - Chakravathy HD [40045]
-[5359]  Chnl200 - Celestial Movies [40043]
-[5360]  Chnl200 - Movies Pack [40010]
-[5361]  Chnl200 - Sports Pack [40011]
-[5362]  Chnl200 - Dynasty Pack [40012]
-[5363]  Chnl200 - New Emperor Pack [40013]
-[5364]  Chnl200 - Gold Pack [40014]
-[5365]  Chnl200 - Maharaja Pack [40015]
-[5366]  Chnl200 - Metro Pack [40016]
-[5367]  Chnl200 - BabyTV (Special Interest) [40017]
-[5368]  Chnl200 - News Pack [40018]
-[5369]  Chnl200 - Learning Pack [40019]
-[5370]  Chnl200 - Kids Pack [40020]
-[5371]  Chnl200 - Variety Pack [40021]
-[5372]  Chnl200 - AOD [40022]
-[5373]  Chnl200 - Astro Box Office Movies Thangathirai [40023]
-[5374]  Chnl200 - Basic HD Service (RM20 monthly subscription fee) [40024]
-[5375]  Chnl200 - Movies Pack HD [40025]
-[5376]  Chnl200 - Learning Pack HD [40026]
-[5377]  Chnl200 - Sports Pack HD [40027]
-[5378]  Chnl200 - Dynasty Pack HD [40028]
-[5379]  Chnl200 - Celestial HD [40029]
-[5380]  Chnl200 - Indo Pek HD [40030]
-[5381]  Chnl200 - Mustika Pack HD [40031]
-[5382]  Chnl200 - Maharaja Pack HD [40032]
-[5383]  Chnl200 - New Emperor Pack HD [40033]
-[5384]  Chnl200 - Gold Pack HD [40034]
-[5385]  Chnl200 - Metro Pack HD [40035]
-[5386]  Chnl200 - Kids Pack HD [40036]
-[5387]  Chnl200 - News Pack HD [40037]
-[5388]  Chnl200 - BabyTV HD [40038]
-[5389]  Chnl200 - Variety Pack HD [40039]
-[5390]  Chnl200 - AOD HD [40040]
-[5391]  Chnl200 - Astro Box Office Movies Tayangan Hebat HD [40041]
-[5392]  Chnl200 - Astro Box Office Movies Thangathirai HD [40042]
-[5396]  Chnl200 - Astro Box Office Movies Tayangan Hebat [40003]
-[5397]  Chnl200 - Astro Plus SVOD [40002]
-[5398]  Chnl200 - Mustika Pack [40001]
-[5399]  Chnl200 - Indo Pek [40000]
-[32809] Euro/Olympic Pass [60000]
-[32773] Euro/Olympic Pass [60001]
-[32825] Euro/Olympic Pass [60002]
-[20194] ISU Catchup [SVOD_CATCHUPTV]
-[20202] ISU Astro OD+ [SVOD_ASTROPLUS]
-[32826] Mustika Hujung Minggu PPV(Citra,Warna,Bella,Mustika HD) [82001]
-[32771] ASSP3 Weekend PASS PPV(ASSP3 & HD) [82000]
-[32797] Celestial Channel PPV Pass [82002]
-[32820] Hua Hee Dai PPV Pass [82003]
-[32818] Shuang Xing PPV Pass [82004]
-[32790] SUN TV PPV Pass [82005]
-[32831] Star Vijay PPV Pass [82006]
-[4606] ABO Sport 845/825 PPV Pass [54606]
+[1]Brunei PPV Sports BO
+[2]Brunei PPV Sports BO 2
+[3]Brunei PPV Sports BO 3
+[4]Brunei PPV Sports BO 4
+[5]Brunei PPV Sports BO 5
+[6]Brunei PPV Sports BO 6
+[7]Brunei PPV Sports BO 7
+[8]Brunei PPV Sports BO 8
+[9]Brunei PPV Sports BO 9
+[10]Brunei Movies (Ruby Package)
+[11]Brunei World (Sapphire Package)
+[12]Brunei Reserved 1
+[13]Brunei MCR
+[14]Brunei Mustika
+[15]Brunei Maharaja
+[16]Brunei PPV Movies BO 1
+[17]Brunei PPV Movies BO 2
+[18]Brunei ABO Thangathirai
+[19]Brunei ABO Tayangan Hebat
+[20]Brunei Astro Fav
+[21]Brunei Movies HD (Ruby HD Package)
+[22]Brunei World HD (Sapphire HD Package)
+[23]Brunei Learning HD
+[24]Brunei Variety HD
+[25]Reserved 1
+[26]Radio Services
+[29]Chinese Family Package
+[30]Family Special Package
+[31]Family Special HD Package
+[33]Malaysia MCR
+[35]Sports 360
+[39]Reserved 2
+[42]Baby TV
+[43]Reserved 3
+[44]Shuang Xing
+[45]School Package
+[46]Maharaja Package
+[47]Celestial Movies
+[48]Gold Package
+[49]Indo Pek
+[50]Astro Stocklink
+[51]Metro Package
+[52]Reserved 5
+[53]Family Package
+[54]Sports Lite Package
+[55]Sports Lite HD
+[56]Dynasty Package
+[57]Movies Package
+[58]Kids Package
+[59]Learning Package
+[60]News Package
+[61]Variety Package
+[62]Sports Package
+[63]New Emperor Package
+[64]Mustika Package
+[65]Movies HD
+[66]Sports HD
+[67]Learning HD
+[68]Variety HD
+[69]Dynasty HD
+[70]Project Gemilang Package
+[71]Family HD/Family Extra
+[72]HD Selection
+[73]Mustika HD
+[74]Maharaja HD
+[75]New Emperor HD
+[76]Gold HD
+[77]Metro HD
+[78]Kids HD
+[79]News HD
+[80]HBO HD ALC for Regular Customer 
+[81]Fox Sports HD ALC for Regular Customer
+[82]ASSP HD ALC for Regular Customer
+[83]NAT GEO HD ALC for Regular Customer
+[84]HISTORY HD ALC for Regular Customer
+[85]Chinese Family HD
+[86]PD Pack
+[87]Jade Pack
+[89]PAT (Go Shop & Go Shop 2)
+[90]Maxis Select
+[91]Maxis Select Movies
+[92]A-List HD
+[93]Sports Premium (Setanta, Golf, Cricket)
+[94]Korean Pack
+[95]Boo
+[98]CFP 98 (Free Preview)
+[99]HD Preview
+[100]SD Preview (CFP)
+[101]HDMI Enabler
+[102]Security Update 1
+[103]DMG/B.yond PVR Recording Enabler
+[104]Pairing Override Enabler
+[105]B.yond Recording Enabler
+[107]IPPV Enabler
+[108]PDL Enabler (PDL Enabler Service) 
+[109]Hybrid Enabler (IPTV Marker 2)
+[110]B.yond/B.yond PVR IP Enabler (IPTV Marker 1)
+[112]Maxis IPTV Enabler (IPTV Marker 3)
+[160]Astro-X Opt In (temp for IVP)
+[161]Engineering Test (EGT)
+[162]EXPay and EZMEG (EXPM)
+[163]Special-01 (SPEC-1) /Iqraa
+[166]Special-02 (SPEC-2)
+[167]Government Free Satellite
+[168]Jaguh / Freesat Pack
+[169]PDL Sub
+[170]PDL Sub 1 (Usage for VOD Passes L2)
+[190]SVOD Karaoke
+[191]SVOD Animax
+[192]SVOD Asian Entertainment (AOTG Pack)
+[193]SVOD Movies
+[194]SVOD Catch-up TV (AOTG Pack)
+[195]SVOD Reward On Demand TV
+[196]SVOD Entertainment
+[197]SVOD Education
+[198]SVOD Kids
+[199]SVOD Variety
+[200]SVOD Box Office
+[201]SVOD Events
+[202]Subscription OD
+[209]SVOD Astro Select
+[210]Astro First Loyalist
+[220]AOD HD
+[221]ABO Tayangan Hebat
+[222]ABO Thangathirai
+[223]AOD Freeview 4
+[224]AOD Freeview 3
+[225]AOD Freeview 2
+[226]AOD Freeview 1
+[227]AOD Loyalist
+[228]ABO Loyalist 1
+[229]ABO Loyalist 2
+[230]Malaysia Astro Fav
+[231]Malaysia Fav (FTA)
+[232]Malaysian Common Reserved 1
+[233]Malaysian Common Reserved 2
+[234]Malaysian Common Reserved 3
+[235]Malaysian Common Reserved 4
+[236]*Related to CA ID 10 / 11 / 231 / 293 (Malaysia/Brunei Fav - Terrestrial Channels)
+[237]*Related to CA ID 13 / 33 (C_MCR)
+[240]*Related to CA ID 102 / 765 (Security Update 1)
+[250]*Related to CA ID 104 / 767 (Pairing Override)
+[254]*Related to CA ID 107 / 761 (IPPV Enabler)
+[255]*Related to CA ID 103 / 105 / 763 / 764 (Recording)
+[256]Malaysia ALC Arab TV
+[257]Malaysia ALC CNBC Asia
+[258]Malaysia ALC CNN
+[259]Malaysia ALC Fox Sports
+[260]Malaysia ALC Fox Sports 2
+[261]Malaysia ALC Nat Geo
+[262]Malaysia ALC Diva Channel
+[263]Malaysia ALC Max
+[264]Malaysia ALC Fox Movies Premium
+[265]Malaysia ALC Star World
+[266]Malaysia ALC Fox
+[267]Malaysia ALC MTV ASIA
+[268]Malaysia ALC Discovery
+[269]Malaysia ALC Disney    
+[270]Malaysia ALC Cartoon Network
+[271]Malaysia ALC Wah Lai Toi 
+[272]Malaysia ALC Astro Ria      
+[273]Malaysia ALC Vaanavil        
+[274]Malaysia ALC Asian Ent. Channel
+[275]Malaysia ALC HBO          
+[276]Malaysia ALC ASSP/ASSP3/ASSP4
+[277]Malaysia ALC Bloomberg    
+[278]Malaysia ALC NHK World      
+[279]Malaysia ALC Xing He
+[280]Malaysia ALC Lifetime
+[281]Malaysia Radio Services
+[282]Malaysia ALC Discovery Travel & Living
+[283]Malaysia ALC AXN
+[284]Malaysia ALC Animal Planet
+[285]Malaysia ALC Tutor TV UPSR
+[286]Malaysia ALC Baby TV
+[287]Malaysia ALC BBC
+[288]Malaysia ALC Ria HD
+[289]Malaysia ALC ZooMoo
+[290]Malaysia ALC tvN
+[291]Malaysia ALC HGTV
+[292]Malaysia ALC News
+[293]Malaysia Terestial Channel
+[295]Malaysia ALC TVBS Asia
+[296]Malaysia ALC Pheonix
+[299]Malaysia ALC Shuang Xing
+[302]Malaysia ALC Celestial Movies
+[305]Malaysia ALC Astro Stocklink
+[335]Malaysia ALC HBO HD
+[336]Malaysia ALC Fox Sports HD
+[337]Malaysia ALC ASSP HD
+[338]Malaysia ALC Nat Geo HD
+[339]Malaysia ALC History HD
+[355]Malaysia ALC TVIQ
+[356]Malaysia ALC Astro Prima
+[357]Malaysia ALC CHAT@15
+[358]Malaysia ALC HITZ.TV (unused)
+[359]Malaysia ALC CTVN
+[360]Malaysia ALC Disney Junior
+[361]Malaysia ALC Astro Oasis
+[362]Malaysia ALC Pheonix InfoNews
+[363]Malaysia ALC SunTV
+[373]Malaysia ALC Aruna (unused)
+[374]Malaysia ALC WATV
+[375]Malaysia ALC CTV4
+[376]Malaysia ALC Kirana (unused)
+[377]Malaysia ALC Ceria
+[378]Malaysia ALC Animax
+[379]Malaysia ALC Zee TV
+[380]Malaysia ALC BBC Entertainment (unused) 
+[381]Malaysia ALC Al-Jazeera English      
+[382]Malaysia ALC CTI
+[383]Malaysia ALC Eve
+[384]Malaysia ALC DMAX
+[385]Malaysia ALC E! Entertainment
+[386]Malaysia ALC Kai Lai Toi
+[387]Malaysia ALC Eurosports
+[388]Malaysia ALC Sun Music
+[389]Malaysia ALC Vellithirai
+[390]Malaysia ALC Discovery Science
+[391]Malaysia ALC Golf Channel
+[392]Malaysia ALC Crime Investigation
+[393]Malaysia ALC History
+[394]Malaysia ALC Citra
+[395]Malaysia ALC Food Channel
+[396]Malaysia ALC Astro Hua Hee Dai
+[397]Malaysia ALC Xiao Tai Yang
+[398]Malaysia ALC KBS World
+[400]Malaysia ALC TVB Entertainment News
+[401]Malaysia ALC Nickelodeon
+[402]Malaysia ALC Bernama
+[403]Malaysia ALC Awani
+[404]Malaysia ALC Special Sports 2
+[405]Malaysia ALC Special Sports (Euro/Olympic Pass)
+[406]Malaysia ALC Australia Network
+[407]Unused (ASSP3)
+[408]Malaysia ALC Warna HD
+[409]Malaysia ALC Warna
+[410]Malaysia ALC Tutor TV PT3
+[411]Malaysia ALC Tutor TV SPM
+[412]Malaysia ALC ASSP4
+[413]Tara HD
+[414]CE Prepaid Common
+[415]CE Prepaid Channels [OAS,TVAH,TVi,VAAN,AEC]
+[416]CE Common
+[417]Astro Go Shop Bundle (Chnl 118, 120, 303)
+[425]Malaysia ALC Bella
+[426]Malaysia ALC ASSP2
+[427]Malaysia ALC Bio
+[428]Malaysia ALC AXN HD
+[429]Malaysia ALC Wah Lai Toi HD
+[430]Malaysia ALC ASSP3
+[431]Malaysia ALC Makkal TV
+[432]Malaysia ALC Chutti TV
+[433]Malaysia ALC TVB Classic
+[434]Malaysia ALC Nat Geo Wild
+[435]Malaysia ALC ITV Choice
+[436]Malaysia ALC Arena
+[437]Malaysia ALC Fox Sports 3
+[438]Malaysia ALC Sports Package 2
+[439]Malaysia ALC ASSP2 HD
+[440]Malaysia ALC Fox Movies Premium HD
+[441]Malaysia ALC Celestial HD
+[442]BabyTV HD
+[443]Indo Pek HD
+[444]ABO Tayangan Hebat HD
+[445]ABO Thangathirai HD
+[446]Chakravarthy Package
+[447]Chakravarthy HD
+[448]Malaysia ALC Sky News HD
+[449]Malaysia ALC Disney XD
+[450]Malaysia ALC Disney XD HD
+[451]Malaysia ALC Food Network HD
+[452]Malaysia ALC Life Inspired HD
+[453]Malaysia ALC ASSP3 HD
+[454]Malaysia ALC Adithya
+[455]Malaysia ALC Jaya TV
+[456]Malaysia ALC Raj TV
+[457]Malaysia ALC Kalaignar TV
+[458]Malaysia ALC Star Vijay
+[459]Malaysia ALC Bintang
+[460]Malaysia ALC Pelangi
+[461]BollyOne HD
+[462]Malaysia ALC ASSP4 HD
+[463]Malaysia ALC Arena HD
+[464]Malaysia ALC KBS World HD
+[465]Malaysia ALC Mustika HD
+[466]Malaysia ALC Vinmeen HD
+[467]Malaysia ALC Hua Hee Dai HD
+[468]Malaysia ALC Discovery World HD
+[469]Malaysia ALC Star World HD
+[470]Malaysia ALC Maya HD
+[471]Malaysia ALC Quan Jia HD
+[472]Malaysia ALC FX HD
+[473]Malaysia ALC Sundance HD
+[474]Malaysia ALC WWE SD
+[475]Malaysia ALC Setanta Rugby
+[476]Malaysia ALC Cricket
+[477]Malaysia ALC Golf
+[478]Malaysia ALC WWE HD
+[479]Family Lite
+[480]Malaysia ALC Star Chinese Channel
+[481]Malaysia ALC Fox Family HD
+[482]Malaysia ALC Fox Action HD
+[483]Malaysia ALC Hits HD
+[484]Malaysia ALC FYI HD
+[485]Malaysia ALC Diva HD
+[486]Malaysia ALC Fox HD
+[487]Malaysia ALC One HD
+[488]Malaysia ALC Kix HD
+[489]Malaysia ALC AEC HD
+[490]Malaysia ALC Shuang Xing HD
+[491]Malaysia ALC TVN
+[492]Malaysia ALC Oh!K HD
+[493]Malaysia ALC eGG
+[494]Malaysia ALC beIN
+[495]Malaysia ALC WARNER TV
+[512]Brunei ALC CNBC Asia
+[513]Brunei ALC CNN
+[514]Brunei ALC Fox Sports
+[515]Brunei ALC Star Sports
+[516]Brunei ALC Nat. Geo.
+[517]Brunei ALC Diva Universal
+[518]Brunei ALC Max
+[519]Brunei ALC Fox Movies Premium
+[520]Brunei ALC Star World
+[521]Brunei ALC Channel [V]
+[522]Brunei ALC MTV Asia
+[523]Brunei ALC Discovery
+[524]Brunei ALC Disney
+[525]Brunei ALC Cartoon Network
+[526]Brunei ALC Wah Lai Toi
+[527]Brunei ALC Astro Ria
+[528]Brunei ALC Vannavil
+[529]Brunei ALC Asian Entertainment
+[530]Brunei ALC HBO Asia
+[531]Brunei ALC ASSP
+[532]Brunei ALC Bloomberg
+[533]Brunei ALC WWE SD
+[534]Brunei ALC WWE HD
+[535]Brunei ALC eGG
+[536]Brunei ALC BeIn
+[538]Brunei ALC AXN
+[542]Brunei ALC BBC
+[550]Brunei ALC TVB Asia
+[551]Brunei ALC Pheonix
+[554]Brunei ALC Shuang Xing
+[557]Brunei ALC Celestial Movies
+[611]Brunei ALC Astro Prima
+[619]Brunei ALC Live 8 channel
+[638]Brunei ALC Eve
+[639]Brunei ALC Discovery Realtime
+[640]Brunei ALC Entertainment
+[641]Brunei ALC Kai Lai Toi
+[642]Brunei ALC Euro Sport
+[643]Brunei ALC Sun Music
+[644]Brunei ALC Vellithirai
+[645]Brunei ALC Discover Science
+[646]Brunei ALC Golf Chanel
+[656]Brunie ALC Nickelodeon
+[657]Brunei ALC Bernama
+[658]Brunei ALC Awani
+[659]Brunei ALC Euro 2008
+[660]Brunei ALC Olympic Beijing 2008 
+[661]Brunei ALC Australian Network
+[670]Brunei Family HD
+[671]Brunei Sports Package 
+[672]Brunei ALC BollyOne HD
+[673]Brunei ALC Cricket HD
+[674]Brunei ALC Hits HD
+[750]Brunei AOD Loyalist
+[751]Brunei AOD Free View 1
+[752]Brunei AOD Free View 2
+[753]Brunei AOD Free View 3
+[754]Brunei AOD Free View 4
+[760]Hybrid Enabler
+[761]IPPV Enabler
+[762]PDL Enabler
+[763]B.yond Recording Enabler
+[764]DMG/B.yond PVR Recording Enabler
+[765]Security Update 1                       
+[766]HDMI Enabler
+[767]Pairing Override Enabler
+[4504]NJOI - Prepaid Indo Pack [50504]
+[4512]NJOI - Prepaid sports pack (Arena + Supersport 4) [50512]
+[4514]NJOI - Chakravathy [50514]*
+[4524]NJOI - Bella [50524]
+[4525]NJOI - Citra [50525]
+[4526]NJOI - Warna [50526]
+[4527]NJOI - Ria [50527]
+[4528]NJOI - Shuang Xing [50528]
+[4529]NJOI - TVB Xing He [50529]
+[4530]NJOI - Celestial Movies [50530]
+[4531]NJOI - Hua Hee Dai [50531]
+[4532]NJOI - Thangathirai [50532]
+[4533]NJOI - Ceria [50533]
+[4534]NJOI - KBS World [50534]
+[4535]NJOI - Zee Variasi [50535]
+[4537]Chnl200 - Euro/Olympic Pass [50537]
+[4538]NJOI - Nat Geo Wild [50538]
+[4539]NJOI - Animal Planet [50539]
+[4540]NJOI - eGG [50540]
+[4541]NJOI - Tara HD[50541]
+[4542]NJOI - TVIQ [50542]
+[4543]NJOI - Cartoon Network [50543]
+[4544]NJOI - Disney [50544]
+[4545]NJOI - Disney Junior [50545]
+[4546]NJOI - Disney XD [50546]
+[4547]NJOI - Nickelodeon [50547]
+[4548]NJOI - ZOOMOO[50548]
+[4549]NJOI - Quan Jia HD [54549]
+[4550]NJOI - Vinmeen [54550]
+[4551]NJOI - Jaya TV [54551]
+[4552]NJOI - Raj TV [54552]
+[4553]NJOI - Kalaignar TV [54553]
+[4554]NJOI - Star VJ [54554]
+[4555]NJOI - Vellithirai [54555]
+[5336]Chnl200 - Mustika & Warna [45336]*
+[5337]Chnl200 - Wah Lai Toi [45337]*
+[5338]Chnl200 - Fox Sports & Fox Sports HD [45338]
+[5339]Chnl200 - beIN Sports [45339]
+[5340]Chnl200 - Jade Pack [45340]
+[5341]Chnl200 - Boo [45341]
+[5342]Chnl200 - Star Chinese [40060]
+[5343]Chnl200 - Sports Lite [40059]
+[5344]Chnl200 - Sports Focus [40058]
+[5345]Chnl200 - Astro Cricket [40057]
+[5346]Chnl200 - WWE Network [40056]
+[5347]Chnl200 - Setanta Sports [40055]
+[5348]Chnl200 - Golf Channel HD [40054]
+[5349]Chnl200 - Oh!K HD [40053]
+[5350]Chnl200 - BollyOne HD [40052]
+[5351]Chnl200 - Wah Lai Toi [40051]
+[5352]Chnl200 - Astro Super Sports 4 [40050]
+[5353]Chnl200 - Astro Super Sports 3 [40049]
+[5354]Chnl200 - Astro Super Sports 2 [40048]
+[5355]Chnl200 - Astro Super Sports 1 [40047]
+[5356]Chnl200 - A-List HD [40046]
+[5357]Chnl200 - Chakravathy [40044]
+[5358]Chnl200 - Chakravathy HD [40045]
+[5359]Chnl200 - Celestial Movies [40043]
+[5360]Chnl200 - Movies Pack [40010]
+[5361]Chnl200 - Sports Pack [40011]
+[5362]Chnl200 - Dynasty Pack [40012]
+[5363]Chnl200 - New Emperor Pack [40013]
+[5364]Chnl200 - Gold Pack [40014]
+[5365]Chnl200 - Maharaja Pack [40015]
+[5366]Chnl200 - Metro Pack [40016]
+[5367]Chnl200 - BabyTV (Special Interest) [40017]
+[5368]Chnl200 - News Pack [40018]
+[5369]Chnl200 - Learning Pack [40019]
+[5370]Chnl200 - Kids Pack [40020]
+[5371]Chnl200 - Variety Pack [40021]
+[5372]Chnl200 - AOD [40022]
+[5373]Chnl200 - Astro Box Office Movies Thangathirai [40023]
+[5374]Chnl200 - Basic HD Service (RM20 monthly subscription fee) [40024]
+[5375]Chnl200 - Movies Pack HD [40025]
+[5376]Chnl200 - Learning Pack HD [40026]
+[5377]Chnl200 - Sports Pack HD [40027]
+[5378]Chnl200 - Dynasty Pack HD [40028]
+[5379]Chnl200 - Celestial HD [40029]
+[5380]Chnl200 - Indo Pek HD [40030]
+[5381]Chnl200 - Mustika Pack HD [40031]
+[5382]Chnl200 - Maharaja Pack HD [40032]
+[5383]Chnl200 - New Emperor Pack HD [40033]
+[5384]Chnl200 - Gold Pack HD [40034]
+[5385]Chnl200 - Metro Pack HD [40035]
+[5386]Chnl200 - Kids Pack HD [40036]
+[5387]Chnl200 - News Pack HD [40037]
+[5388]Chnl200 - BabyTV HD [40038]
+[5389]Chnl200 - Variety Pack HD [40039]
+[5390]Chnl200 - AOD HD [40040]
+[5391]Chnl200 - Astro Box Office Movies Tayangan Hebat HD [40041]
+[5392]Chnl200 - Astro Box Office Movies Thangathirai HD [40042]
+[5396]Chnl200 - Astro Box Office Movies Tayangan Hebat [40003]
+[5397]Chnl200 - Astro Plus SVOD [40002]
+[5398]Chnl200 - Mustika Pack [40001]
+[5399]Chnl200 - Indo Pek [40000]
+[32809]Euro/Olympic Pass [60000]
+[32773]Euro/Olympic Pass [60001]
+[32825]Euro/Olympic Pass [60002]
+[20194]ISU Catchup [SVOD_CATCHUPTV]
+[20202]ISU Astro OD+ [SVOD_ASTROPLUS]
+[32826]Mustika Hujung Minggu PPV(Citra,Warna,Bella,Mustika HD) [82001]
+[32771]ASSP3 Weekend PASS PPV(ASSP3 & HD) [82000]
+[32797]Celestial Channel PPV Pass [82002]
+[32820]Hua Hee Dai PPV Pass [82003]
+[32818]Shuang Xing PPV Pass [82004]
+[32790]SUN TV PPV Pass [82005]
+[32831]Star Vijay PPV Pass [82006]
+[4606]ABO Sport 845/825 PPV Pass [54606]
